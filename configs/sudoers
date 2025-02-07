@@ -1,0 +1,2 @@
+# Allow user "kali" to sudo without password
+kali    ALL=(ALL) NOPASSWD: ALL
