@@ -18,7 +18,7 @@ Here are the all the files I configure differently from default kali.
 
 ```powershell
 # _htb-cli (root, 644)
-/usr/local/share/zsh/site-functions
+/usr/local/share/zsh/site-functions/_htb-cli
 
 # .vimrc
 /home/kali/.vimrc
