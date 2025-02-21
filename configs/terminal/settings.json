@@ -1,6 +1,7 @@
 {
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
+    "multiLinePasteWarning": false,
     "actions": 
     [
         {
@@ -53,7 +54,7 @@
             "font": 
             {
                 "face": "Fira Code",
-                "size": 11
+                "size": 10
             },
             "scrollbarState": "hidden"
         },
