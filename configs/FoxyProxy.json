@@ -1,0 +1,49 @@
+{
+  "mode": "127.0.0.1:1080",
+  "sync": false,
+  "autoBackup": false,
+  "passthrough": "",
+  "theme": "",
+  "container": {},
+  "commands": {
+    "setProxy": "",
+    "setTabProxy": "",
+    "quickAdd": ""
+  },
+  "data": [
+    {
+      "active": true,
+      "title": "burp",
+      "type": "http",
+      "hostname": "127.0.0.1",
+      "port": "8080",
+      "username": "",
+      "password": "",
+      "cc": "",
+      "city": "",
+      "color": "#57e389",
+      "pac": "",
+      "pacString": "",
+      "proxyDNS": true,
+      "include": [],
+      "exclude": []
+    },
+    {
+      "active": true,
+      "title": "proxychains",
+      "type": "socks5",
+      "hostname": "127.0.0.1",
+      "port": "1080",
+      "username": "",
+      "password": "",
+      "cc": "",
+      "city": "",
+      "color": "#62a0ea",
+      "pac": "",
+      "pacString": "",
+      "proxyDNS": true,
+      "include": [],
+      "exclude": []
+    }
+  ]
+}

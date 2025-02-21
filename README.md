@@ -20,9 +20,10 @@ Here are the all the files I configure differently from default kali.
 # _htb-cli (root, 644)
 /usr/local/share/zsh/site-functions/_htb-cli
 
-# .vimrc
-/home/kali/.vimrc
-/root/.vimrc
+# vim
+/home/kali/.vim/.vimrc
+/home/kali/.vim/autoload/*
+/home/kali/.vim/colors/*
 
 # .zshrc
 /home/kali/.zshrc
