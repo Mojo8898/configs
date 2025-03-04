@@ -1,0 +1,31 @@
+Teamserver {
+    Host = "0.0.0.0"
+    Port = 40056
+
+    Build {
+        Compiler64 = "data/x86_64-w64-mingw32-cross/bin/x86_64-w64-mingw32-gcc"
+        Compiler86 = "data/i686-w64-mingw32-cross/bin/i686-w64-mingw32-gcc"
+        Nasm = "/usr/bin/nasm"
+    }
+}
+
+Operators {
+    user "mojo" {
+        Password = "Password123!"
+    }
+}
+
+Demon {
+    Sleep = 2
+    Jitter = 15
+    IndirectSyscall = true
+    StackDuplication = true
+    SleepTechnique = "Ekko"
+    ProxyLoading = "RtlQueueWorkItem"
+    TrustXForwardedFor = false
+
+    Injection {
+        Spawn64 = "C:\\Windows\\System32\\notepad.exe"
+        Spawn32 = "C:\\Windows\\SysWOW64\\notepad.exe"
+    }
+}
