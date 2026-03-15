@@ -1,0 +1,76 @@
+messageViewers:
+- prefix: [openssl, asn1parse, -inform, DER, -i]
+  inputMethod: stdin
+  name: OpenSSL ASN.1 decoder
+  filter:
+    orElse:
+    - prefix: !!binary |-
+        MII=
+    - prefix: !!binary |-
+        MIA=
+- prefix: [dumpasn1]
+  inputMethod: filename
+  name: DumpASN1
+  filter:
+    orElse:
+    - prefix: !!binary |-
+        MII=
+    - prefix: !!binary |-
+        MIA=
+- prefix: [python, -m, json.tool]
+  inputMethod: stdin
+  name: Python JSON formatter
+  filter:
+    orElse:
+    - {prefix: '{', postfix: '}'}
+    - {prefix: '[', postfix: ']'}
+- prefix: [hd]
+  inputMethod: stdin
+  name: hd
+- prefix: [protoc, --decode_raw]
+  inputMethod: stdin
+  exitCode: [0]
+  name: ProtoBuf
+- prefix: [gron]
+  inputMethod: stdin
+  name: gron
+  filter: {prefix: '{'}
+menuItems:
+- prefix: [python3, /opt/tools/burp-piper-scripts/ffuf-lfi.py]
+  inputMethod: stdin
+  passHeaders: true
+  name: ffuf LFI
+  scope: request_only
+  hasGUI: true
+- prefix: [python3, /opt/tools/burp-piper-scripts/sqlmap.py]
+  inputMethod: stdin
+  passHeaders: true
+  name: sqlmap
+  scope: request_only
+  hasGUI: true
+intruderPayloadProcessors:
+- prefix: [sh, -c, dd if=/dev/urandom of=/dev/stdout bs=1 count=`shuf -i1-100 -n1`
+      status=none]
+  inputMethod: stdin
+  requiredInPath: [dd, shuf]
+  name: replace with /dev/urandom
+commentators:
+- prefix: [sha256sum]
+  inputMethod: stdin
+  name: SHA-256
+intruderPayloadGenerators:
+- prefix: [seq, '10']
+  inputMethod: stdin
+  name: seq 1-10
+- prefix: [seq, '100']
+  inputMethod: stdin
+  name: seq 1-100
+- prefix: [seq, '1000']
+  inputMethod: stdin
+  name: seq 1-1000
+- prefix: [seq, '10000']
+  inputMethod: stdin
+  name: seq 1-10000
+- prefix: [seq, '100000']
+  inputMethod: stdin
+  name: seq 1-100000
