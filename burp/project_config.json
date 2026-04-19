@@ -241,6 +241,7 @@
             "socks_proxy":{
                 "dns_over_socks":false,
                 "host":"",
+                "host_bypass_list":[],
                 "password":"",
                 "port":0,
                 "use_proxy":false,

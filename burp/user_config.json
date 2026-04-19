@@ -4,7 +4,797 @@
             "enabled":true
         },
         "bchecks":{
-            "imported_scripts":[]
+            "imported_scripts":[
+                {
+                    "path":"/root/.BurpSuite/bchecks/Filesystem exposure via home000ROOT000.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/403  401 Header Bypass via IP.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/403429 bypass using HTTP Header.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Alibaba Sentinel SSRF .bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Apache Struts OGNL Console Publicly Accessible.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Apache Tomcat Manager Path Normalization Panel - Detect.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Blind SSRF By Collaborator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CONNECT port scan.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CRLF Injection.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CSV Injection with delayed Collaborator pingback.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2001-0537 CISCO Authentication Bypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/[CVE-2011-3192] Apache Range Header DoS (Apache Killer).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2016-4437 Shiro Key Crack.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2017-4971 Spring WebFlow RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2017-8046 Spring Data Rest RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2017-9248 - Telerik UI Encryption Keys Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2018-1000129 - Jolokia 137 - Cross-Site Scripting.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2018-11759 - Apache mod_jk access control bypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2018-1273 Spring Data Commons RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/[CVE-2018-15133] PHP Laravel Framework token Unserialize Remote Command Execution.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Atlassian Jira WallboardServlet 7131 - Cross-Site Scripting.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2019-17662 - ThinVNC 10b1 - Auth Bypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Keycloak before 1201 version - request_uri Blind Server-Side Request Forgery (Unauthenticated).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2020-1957 Shiro AuthBypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2020-35713 - Belkin Linksys RE6500 10012001 - RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2020-5902 F5 Networks Authentication Bypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2021-20323.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2021-27748 SSRF Websphere Portal.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2021-38647 - Microsoft Open Management Infrastructure - RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2021-41773  CVE-2021-42013 (Apache 2449 and 2450).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2022-0140.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2022-22947 Spring Cloud Gateway Actuator API RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2022-22963 Spring Cloud Function RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2022-22965 Spring Data Binding RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2022-22978 Spring Security Authorization Bypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2022-24260 VoipMonitor - Pre-Auth SQL Injection.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2023-23752 Unauthenticated information disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/[CVE-2023-24488] Vulnerable Citrix Gateway Detected.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2023-25690.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2023-26360 Adobe ColdFusion Arbitrary File Read and Code Execution.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2023-29298 Adobe ColdFusion Access Control Bypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2023-32563 - Ivanti Avalanche - RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Ivanti API Unauthenticated Access.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2023-36346 POS Codekop v20 - Cross-site Scripting.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2023-36845 Juniper Networks - PHP External Variable Modification.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2023-37265 - CasaOS - Auth Bypass due to a lack of IP address verification.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2023-38035 - Ivanti Sentry - Auth Bypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2023-39141 Aria2 WebUI - Path Traversal.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2023-46805 - Ivanti Connect Secure and Ivanti Policy Secure Authentication Bypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2023-5074 D-Link D-View 8 v20128 - Authentication Bypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2023-5244 - Microweber  V20 - Cross-Site Scripting.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/[CVE-2025-27636]  Exec override via mixed-case header in Apache Camel.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2025-29927 Nextjs Middleware Bypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/[CVE-2025-30208] Vite fs File Read or Directory Leak.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/[CVE-2025-5777] Citrix Netscaler CitrixBleed 2.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2021-20114 TCExam  1481 - Sensitive Information Exposure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2021-20158 Trendnet AC2600 TEW-827DRU 208B01 - Admin Password Change.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2021-21816 D-Link DIR-3040 113B03 - Information Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CVE-2022-0150 WordPress Accessibility Helper 0607 - Cross-Site Scripting.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Cache Deception check (Path confusion).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Information Disclosure Secret Finder - certain.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/HTTP Methods Available (passive).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Cloudflare External Image Resizing Misconfiguration.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Insecure Content-Security-Policy.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/SameSite attribute was set to None.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Hidden Input Field Detection at Response Level (Passive).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Etcd Server - Unauthenticated Access.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Extended Out-of-Band SSRF Injections.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Fastjson 1224 Deserialization RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Fastjson 1241 Deserialization RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Fastjson 1242 Deserialization RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Fastjson 1243 Deserialization RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Fastjson 1247 Deserialization RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Fastjson 1262 Deserialization RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Fastjson 1267 Deserialization RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Fastjson 1268 Deserialization RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Fastjson 1280 Deserialization RCE.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Firebase Information Found.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/IBM Friendly Path Publicly Accessible.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/IBM Websphere Portal Information Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Insecure HTTP Methods Allowed [Passive].bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Interesting file error in the response.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Kubernetes Pods - API Discovery  Remote Code Execution.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Microsoft Exchange Admin Center Exposure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Nacos Unauthorized Create User.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Nacos default password.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Nacos ServerIdentity Bypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Nacos User List Unauthorized Bypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Nacos User List Unauthorized.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/NetscalerCitrixADC Icon Hash.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/OpenID Connect Dynamic Registration Endpoint Detected.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/PHP Laravel Debug Mode enabled.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Password in JavaScript Logger.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/PathSuffix-Bypass-4ProxyOrWAF.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Perl JAM 2.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Ruby on Rails - CRLF Injection and Cross-Site Scripting.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/SAP Directory Listing.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/SAP authentication bypass check.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/SSRF in each insetpoint.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/NET Razor SSTI Injection.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Spring4Shell (Response).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot autoconfig actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot beans actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot caches actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot conditions actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot configprops actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot env actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot health actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot heapdump actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot info actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot logfile actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot loggers actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot metrics actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot scheduledtasks actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot threaddump actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Springboot trace actuator.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Information Disclosure Secret Finder - tentative.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Use of Basic Auth Scheme.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Use of Password Grant Type.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Use of Unencrypted URI Schemes.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/WebBackup Exposed.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Detect WoodWing Studio Server Panel.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/WordPress README file Exposure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Xdebug remote code execution via xdebugremote_connect_back.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Adobe OAuth Client Secret.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Age Recipient (X25519 public key).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Age Identity Key in Source Code.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Amazon SNS Topic Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Apache Airflow Configuration Page.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Apache mod_info.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/AWS Access Key ID Value.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/AWS AccessSecret Key Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/AWS API Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/AWS Session Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/DigitalOcean Key Exposure via Axiom.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Azure APIM Secret Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Backend-language.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Bitly Secret Key Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Request-level collaborator based.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/PayPal Braintree Access Token Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Use of Known API Variable.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Cloudinary Credentials Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CodeClimate Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Cookie cached on disk.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Invalid CORS configuration for credentialed requests detected.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Couchbase Buckets Unauthenticated REST API - Detect.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Cratesio API Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/CSRF-Magic backdoor detected.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Rate limiter detected.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Discord Webhook Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Dockerrun AWS Configuration Page Exposed.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/DS_Store Configuration Check.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Dynatrace API Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Email splitting attack.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Path-level.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Exposed Generic Prometheus Metrics.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Host-level.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Exposed Laravel Clockwork Endpoint.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Exposed Laravel Telescope Endpoint.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Exposed Prometheus API Endpoints.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Prometheus Metrics Publicly Available.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Simple SAML php Admin Interface.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Swagger endpoint found.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Facebook Access Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/FCM Server Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Forwarded requests collaborator interaction detected.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Response-level.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Git Configuration Check.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Github App Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/GitHub OAuth Access Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/GitHub Personal Access Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/GitHub Refresh Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/GitLab CI Exposure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/GitLab Personal Access Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/GitLab Pipeline Trigger Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/GitLab Runner Registration Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/go debug pprof exposed.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Google API Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Google Calendar URI Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Google Client ID.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Google OAuth Client Secret (prefixed).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Graphql Introspection Query Enabled.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/GraphQL CSRF GET  Method Enabled.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Heroku API Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/HTTP method override capability detected.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/JDBC Connection String Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Jenkins Token or Crumb in Source Code.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Javascript Source map detected.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/HMAC-Signed JWT Identified.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/None algorithm attack on JWS.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/JWT Token Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Response-level (passive).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Log4Shell (collaborator).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Loqate API Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Mailchimp API Value.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Mailgun API Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Malicious JavaScript import in use.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Malicious Polyfill CDN In Use.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Mapbox Token Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Mass 48 Param For Open Redirect.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Microsoft Teams Webhook Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Missing securitytxt.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/NewRelic Admin API Key Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/New Relic Insights Keys Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/New Relic Pixie API Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/New Relic Pixie Deploy Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/NewRelic REST API Key Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Synthetics Location Key Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/NPM Access Token (fine-grained).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/NPM Debug Log Files.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/NTLM Authentication Detection.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/NuGet API Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Google OAuth Access Key Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/OpenAI API Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Path-bypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/PHP 810-dev Backdoor - Code Injection.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/PHP Info Exposure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Picatic API Key Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/PyPI Upload Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Common Python file exposures.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Razorpay Client ID Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Ruby on Rails storageyml File Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/RubyGems API Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Sauce Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Segment Public API Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Sendgrid API Key Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/server-detect.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Server-side prototype pollution (status).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Shiro Cookie Check Active.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Shiro Cookie Check Passive.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Shopify App Secret.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Shopify Access Token (Custom App).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Shopify Access Token (Legacy Private App).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Shopify Access Token (Public App).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Shoppable Service Auth Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Slack Access Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Slack User token disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Slack Webhook Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Square Access Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Square OAuth Secret Token Exposure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Stack trace was detected.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/StackHawk API Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Stripe Restricted Key Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Stripe Secret Key Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Support for other content types than json detected.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Insertion-point-level.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/SVN Configuration File Exposed.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Symfony Profiler Mode Enabled.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Misconfigured Symfony Verbose Plugin.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/AWS S3 Bucket takeover.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Shopify subdomain takeover.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Telegram Bot Token.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Template-injection.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Tugboat Configuration File Exposure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Twilio API Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Unauthenticated Access to Prometheus (passive).bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/UUID detected.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/WAF-bypass.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/webconfig file exposure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/xxl job rce.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Zapier Webhook Disclosure.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Zenserp API Key.bcheck"
+                },
+                {
+                    "path":"/root/.BurpSuite/bchecks/Zoho Webhook Disclosure.bcheck"
+                }
+            ]
         },
         "comparer":{
             "sync_views":false
@@ -18,6 +808,7 @@
             "socks_proxy":{
                 "dns_over_socks":false,
                 "host":"",
+                "host_bypass_list":[],
                 "password":"",
                 "port":0,
                 "use_proxy":false,
@@ -38,6 +829,7 @@
                 "font_name":"Monospaced",
                 "font_size":11,
                 "font_smoothing":true,
+                "hide_decoded_text_on_hover":false,
                 "highlight_requests":true,
                 "highlight_responses":true,
                 "pretty_print_by_default":true
@@ -57,13 +849,503 @@
             "extensions":[
                 {
                     "auto_reload":false,
-                    "bapp_serial_version":50,
+                    "bapp_serial_version":7,
+                    "bapp_uuid":"51327b097b354243b307b4ed87ba39eb",
+                    "errors":"ui",
+                    "extension_file":"bapps/51327b097b354243b307b4ed87ba39eb/target/ATOR-v2.3.0-SNAPSHOT-jar-with-dependencies.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Authentication Token Obtain and Replace",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":13,
+                    "bapp_uuid":"866df66d339d4bcd9b599772aff32efd",
+                    "errors":"ui",
+                    "extension_file":"bapps/866df66d339d4bcd9b599772aff32efd/CSTC-1.3.6.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"CSTC, Modular HTTP Manipulator",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":11,
+                    "bapp_uuid":"2495f6fb364d48c3b6c984e226c02968",
+                    "errors":"ui",
+                    "extension_file":"bapps/2495f6fb364d48c3b6c984e226c02968/CollaboratorEverywhere-2.0.3.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Collaborator Everywhere",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":2,
+                    "bapp_uuid":"50fd63182afe43b7a3cf99b523f313f9",
+                    "errors":"ui",
+                    "extension_file":"bapps/50fd63182afe43b7a3cf99b523f313f9/build/libs/Bypass-Bot-Detection-0.0.6.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Bypass Bot Detection",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":52,
                     "bapp_uuid":"3123d5b5f25c4128894d97ea1acc4976",
                     "errors":"ui",
                     "extension_file":"bapps/3123d5b5f25c4128894d97ea1acc4976/active-scan-plus-plus-all.jar",
                     "extension_type":"java",
                     "loaded":true,
                     "name":"Active Scan++",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":51,
+                    "bapp_uuid":"aaaa60ef945341e8a450217a54a11646",
+                    "errors":"ui",
+                    "extension_file":"bapps/aaaa60ef945341e8a450217a54a11646/desynchronize-all.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"HTTP Request Smuggler",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":29,
+                    "bapp_uuid":"9cff8c55432a45808432e26dbb2b41d8",
+                    "errors":"ui",
+                    "extension_file":"bapps/9cff8c55432a45808432e26dbb2b41d8/build/libs/backslash-powered-scanner.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Backslash Powered Scanner",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":6,
+                    "bapp_uuid":"a158fd3fc9394253be3aa0bc4c181d1f",
+                    "errors":"ui",
+                    "extension_file":"bapps/a158fd3fc9394253be3aa0bc4c181d1f/Burp-MissingScannerChecks.py",
+                    "extension_type":"python",
+                    "loaded":true,
+                    "name":"Additional Scanner Checks",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":4,
+                    "bapp_uuid":"c1d4bd60626d4178a54d36ee802cf7e8",
+                    "errors":"ui",
+                    "extension_file":"bapps/c1d4bd60626d4178a54d36ee802cf7e8/build/libs/server-side-prototype-pollution-all.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Server-Side Prototype Pollution Scanner",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":3,
+                    "bapp_uuid":"523ae48da61745aaa520ef689e75033b",
+                    "errors":"ui",
+                    "extension_file":"bapps/523ae48da61745aaa520ef689e75033b/build/libs/Burp-IISTildeEnumerationScanner-all-2.0.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"IIS Tilde Enumeration Scanner",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":7,
+                    "bapp_uuid":"b011be53649346dd87276bca41ce8e8f",
+                    "errors":"ui",
+                    "extension_file":"bapps/b011be53649346dd87276bca41ce8e8f/build/libs/log4shell-scanner.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Log4Shell Scanner",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":4,
+                    "bapp_uuid":"24dab228311049d89a27a4d721e17ef7",
+                    "errors":"ui",
+                    "extension_file":"bapps/24dab228311049d89a27a4d721e17ef7/build/libs/php-object-injection-check-all.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"PHP Object Injection Check",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":2,
+                    "bapp_uuid":"9c9877825cbd428bab27a25d0ea17178",
+                    "errors":"ui",
+                    "extension_file":"bapps/9c9877825cbd428bab27a25d0ea17178/java/build/libs/httpoxy-scanner-all.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"HTTPoxy Scanner",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":2,
+                    "bapp_uuid":"be6af6a556df4423846b25080dbde88c",
+                    "errors":"ui",
+                    "extension_file":"bapps/be6af6a556df4423846b25080dbde88c/build/libs/jwt-scanner-2.1.0.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"JWT Scanner",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":5,
+                    "bapp_uuid":"3908768b9ae945d8adf583052ad2e3b3",
+                    "errors":"ui",
+                    "extension_file":"bapps/3908768b9ae945d8adf583052ad2e3b3/build/libs/host_header_inchecktion-1.2.3.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Host Header Inchecktion",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":2,
+                    "bapp_uuid":"c257bcb0b6254a578535edb2dcee87d0",
+                    "errors":"ui",
+                    "extension_file":"bapps/c257bcb0b6254a578535edb2dcee87d0/CheckCors-1.0.0.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Trusted Domain CORS Scanner",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":5,
+                    "bapp_uuid":"444407b96d9c4de0adb7aed89e826122",
+                    "errors":"ui",
+                    "extension_file":"bapps/444407b96d9c4de0adb7aed89e826122/403Bypasser.py",
+                    "extension_type":"python",
+                    "loaded":true,
+                    "name":"403 Bypasser",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":8,
+                    "bapp_uuid":"0ab7a94d8e11449daaf0fb387431225b",
+                    "errors":"ui",
+                    "extension_file":"bapps/0ab7a94d8e11449daaf0fb387431225b/build/libs/burp-JS-Miner-all.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"JS Miner",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":13,
+                    "bapp_uuid":"36238b534a78494db9bf2d03f112265c",
+                    "errors":"ui",
+                    "extension_file":"bapps/36238b534a78494db9bf2d03f112265c/retirejs-burp-plugin/target/burp-retire-js-3.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Retire.js",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":20,
+                    "bapp_uuid":"26aaa5ded2f74beea19e2ed8345a93dd",
+                    "errors":"ui",
+                    "extension_file":"bapps/26aaa5ded2f74beea19e2ed8345a93dd/build/libs/jwt-editor-2.6.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"JWT Editor",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":2,
+                    "bapp_uuid":"e62afa49e12543edbfa9df498363153c",
+                    "errors":"ui",
+                    "extension_file":"bapps/e62afa49e12543edbfa9df498363153c/build/libs/sign-saboteur-1.0.6.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"SignSaboteur, Web Token Signer",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":10,
+                    "bapp_uuid":"81e073a640964b2ea3af0da93d048dbd",
+                    "errors":"ui",
+                    "extension_file":"bapps/81e073a640964b2ea3af0da93d048dbd/target/SensitiveDiscoverer-4.2.0-jar-with-dependencies.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Sensitive Discoverer",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":13,
+                    "bapp_uuid":"4f01db4b668c4126a68e4673df796f0f",
+                    "errors":"ui",
+                    "extension_file":"bapps/4f01db4b668c4126a68e4673df796f0f/target/burp-suite-error-message-checks-2.0.0.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Error Message Checks",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":15,
+                    "bapp_uuid":"ae62baff8fa24150991bad5eaf6d4d38",
+                    "errors":"ui",
+                    "extension_file":"bapps/ae62baff8fa24150991bad5eaf6d4d38/target/burp-suite-software-version-checks-1.0.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Software Version Reporter",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":1,
+                    "bapp_uuid":"514b964549874209b3a4f70ec54e915d",
+                    "errors":"ui",
+                    "extension_file":"bapps/514b964549874209b3a4f70ec54e915d/trufflehog.py",
+                    "extension_type":"python",
+                    "loaded":true,
+                    "name":"TruffleHog Integration",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":1,
+                    "bapp_uuid":"eefe20568a894635b500ad13fdc8a683",
+                    "errors":"ui",
+                    "extension_file":"bapps/eefe20568a894635b500ad13fdc8a683/build/client-side-path-traversal-exploitation-v1.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Client-Site Path Traversal Exploitation",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":4,
+                    "bapp_uuid":"46a8e69964674ff8ae49774e2b720f0c",
+                    "errors":"ui",
+                    "extension_file":"bapps/46a8e69964674ff8ae49774e2b720f0c/auto-vader.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"AutoVader",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":6,
+                    "bapp_uuid":"93af1c4356884fbe9bb470aae6f8e6e0",
+                    "errors":"ui",
+                    "extension_file":"bapps/93af1c4356884fbe9bb470aae6f8e6e0/HeaderChangeNotifier.py",
+                    "extension_type":"python",
+                    "loaded":true,
+                    "name":"Header Change Notifier",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":7,
+                    "bapp_uuid":"9f38b17450d0486ebd01f59c7d0a1acd",
+                    "errors":"ui",
+                    "extension_file":"bapps/9f38b17450d0486ebd01f59c7d0a1acd/build/libs/indicators-of-vulnerability.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Potential Vulnerability Indicator",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":8,
+                    "bapp_uuid":"35237408a06043e9945a11016fcbac18",
+                    "errors":"ui",
+                    "extension_file":"bapps/35237408a06043e9945a11016fcbac18/csp-auditor-burp-plugin/build/libs/csp-auditor-burp-2.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"CSP Auditor",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":1,
+                    "bapp_uuid":"2e3a9895bb9b41f8b8a1193ec0399d3d",
+                    "errors":"ui",
+                    "extension_file":"bapps/2e3a9895bb9b41f8b8a1193ec0399d3d/sri-check.py",
+                    "extension_type":"python",
+                    "loaded":true,
+                    "name":"SRI Check",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":1,
+                    "bapp_uuid":"1894edb751244e52856efa092d58979d",
+                    "errors":"ui",
+                    "extension_file":"bapps/1894edb751244e52856efa092d58979d/trustedTypesChecker.py",
+                    "extension_type":"python",
+                    "loaded":true,
+                    "name":"Trusted Types Checker",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":1,
+                    "bapp_uuid":"84da5e8f47f94740a214954e3054935c",
+                    "errors":"ui",
+                    "extension_file":"bapps/84da5e8f47f94740a214954e3054935c/lib/build/libs/lib.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Passkey Scanner",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":9,
+                    "bapp_uuid":"f3aec37088aa494c81962d965219be46",
+                    "errors":"ui",
+                    "extension_file":"bapps/f3aec37088aa494c81962d965219be46/build/libs/image-location-scanner.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Image Location and Privacy Scanner",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":1,
+                    "bapp_uuid":"fcbc58b33fc1486d9a795dedba2ccbbb",
+                    "errors":"ui",
+                    "extension_file":"bapps/fcbc58b33fc1486d9a795dedba2ccbbb/ppScanner.py",
+                    "extension_type":"python",
+                    "loaded":true,
+                    "name":"Prototype Pollution Gadgets Finder",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":36,
+                    "bapp_uuid":"f9bbac8c4acf4aefa4d7dc92a991af2f",
+                    "errors":"ui",
+                    "extension_file":"bapps/f9bbac8c4acf4aefa4d7dc92a991af2f/Autorize.py",
+                    "extension_type":"python",
+                    "loaded":true,
+                    "name":"Autorize",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":27,
+                    "bapp_uuid":"7db49799266c4f85866f54d9eab82c89",
+                    "errors":"ui",
+                    "extension_file":"bapps/7db49799266c4f85866f54d9eab82c89/target/AuthAnalyzer-1.1.14-jar-with-dependencies.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Auth Analyzer",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":65,
+                    "bapp_uuid":"9abaa233088242e8be252cd4ff534988",
+                    "errors":"ui",
+                    "extension_file":"bapps/9abaa233088242e8be252cd4ff534988/turbo-intruder.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Turbo Intruder",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":36,
+                    "bapp_uuid":"17d2949a985c4b7ca092728dba871943",
+                    "errors":"ui",
+                    "extension_file":"bapps/17d2949a985c4b7ca092728dba871943/param-miner-all.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Param Miner",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":5,
+                    "bapp_uuid":"ba292c5982ea426c95c9d7325d9a1066",
+                    "errors":"ui",
+                    "extension_file":"bapps/ba292c5982ea426c95c9d7325d9a1066/WebSocketFuzzer-2.0.0.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"WebSocket Turbo Intruder",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "errors":"ui",
+                    "extension_file":"/opt/BurpSuitePro/extensions/HopLa.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"HopLa",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":2,
+                    "bapp_uuid":"c1c32424fb8a4843a5404aa5ed5d711a",
+                    "errors":"ui",
+                    "extension_file":"bapps/c1c32424fb8a4843a5404aa5ed5d711a/build/libs/HackBar-2.0.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"HackBar, Payload Bucket",
                     "output":"ui",
                     "use_ai":false
                 },
@@ -81,6 +1363,42 @@
                 },
                 {
                     "auto_reload":false,
+                    "bapp_serial_version":30,
+                    "bapp_uuid":"0d05f52c00a64cb2b2bea68744f6316c",
+                    "errors":"ui",
+                    "extension_file":"bapps/0d05f52c00a64cb2b2bea68744f6316c/target_repo-2.4.0.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Copy Request Response",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":2,
+                    "bapp_uuid":"d5648b2788324b40a586a96ba8fca2bf",
+                    "errors":"ui",
+                    "extension_file":"bapps/d5648b2788324b40a586a96ba8fca2bf/target/burp-suite-paste-curl-1.0-SNAPSHOT.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Paste cURL to Repeater",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":16,
+                    "bapp_uuid":"c9c37e424a744aa08866652f63ee9e0f",
+                    "errors":"ui",
+                    "extension_file":"bapps/c9c37e424a744aa08866652f63ee9e0f/build/libs/taborator.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Taborator",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
                     "bapp_serial_version":17,
                     "bapp_uuid":"e4e0f6c4f0274754917dcb5f4937bb9e",
                     "errors":"ui",
@@ -93,13 +1411,143 @@
                 },
                 {
                     "auto_reload":false,
-                    "bapp_serial_version":65,
-                    "bapp_uuid":"9abaa233088242e8be252cd4ff534988",
+                    "bapp_serial_version":3,
+                    "bapp_uuid":"657363a6ea0a42d0be7f0b781249089f",
                     "errors":"ui",
-                    "extension_file":"bapps/9abaa233088242e8be252cd4ff534988/turbo-intruder.jar",
+                    "extension_file":"bapps/657363a6ea0a42d0be7f0b781249089f/HTTP-Hacker.jar",
                     "extension_type":"java",
-                    "loaded":false,
-                    "name":"Turbo Intruder",
+                    "loaded":true,
+                    "name":"HTTP Hacker",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":1,
+                    "bapp_uuid":"4b19f5f577254c2ebf0ab63df71d934d",
+                    "errors":"ui",
+                    "extension_file":"bapps/4b19f5f577254c2ebf0ab63df71d934d/./ununicode-1.3-jar-with-dependencies.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"UnUnicode",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":44,
+                    "bapp_uuid":"3c5025b0e19d419a8f339ee0c30391dd",
+                    "errors":"ui",
+                    "extension_file":"bapps/3c5025b0e19d419a8f339ee0c30391dd/releases/sharpener.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Sharpener",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":17,
+                    "bapp_uuid":"e63f09f290ad4d9ea20031e84767b303",
+                    "errors":"ui",
+                    "extension_file":"bapps/e63f09f290ad4d9ea20031e84767b303/ResponseOverview-1.6.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Response Overview",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":4,
+                    "bapp_uuid":"902ef17f5aaa4f8eabe00491de3b241d",
+                    "errors":"ui",
+                    "extension_file":"bapps/902ef17f5aaa4f8eabe00491de3b241d/build/libs/diffy-all.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Diff Last Response",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":4,
+                    "bapp_uuid":"4454db489be244f2a4404ab7842ee4d7",
+                    "errors":"ui",
+                    "extension_file":"bapps/4454db489be244f2a4404ab7842ee4d7/ViewPdfFinal-1.0-SNAPSHOT.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"PDF Render",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":2,
+                    "bapp_uuid":"b7c16f79b8174371aeb42b6ba41a424c",
+                    "errors":"ui",
+                    "extension_file":"bapps/b7c16f79b8174371aeb42b6ba41a424c/basicExtension-1.0-SNAPSHOT.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"WebSocket Traffic Monitor & Exporter",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "errors":"ui",
+                    "extension_file":"/opt/tools/agartha/Agartha.py",
+                    "extension_type":"python",
+                    "loaded":true,
+                    "name":"Agartha",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":24,
+                    "bapp_uuid":"815bb4ab64e240618dc673d65016e919",
+                    "errors":"ui",
+                    "extension_file":"bapps/815bb4ab64e240618dc673d65016e919/GAP.py",
+                    "extension_type":"python",
+                    "loaded":true,
+                    "name":"GAP (Get All Parameters, Links, and Words)",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":8,
+                    "bapp_uuid":"0ac13c45adff4e31a3ca8dc76dd6286c",
+                    "errors":"ui",
+                    "extension_file":"bapps/0ac13c45adff4e31a3ca8dc76dd6286c/build/libs/paramalyzer-all.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Paramalyzer",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":4,
+                    "bapp_uuid":"8eac0db6c905449ea747398a229fbf6b",
+                    "errors":"ui",
+                    "extension_file":"bapps/8eac0db6c905449ea747398a229fbf6b/PacketPurifier.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Packet Purifier",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":12,
+                    "bapp_uuid":"c5071c7a7e004f72ae485e8a72911afc",
+                    "errors":"ui",
+                    "extension_file":"bapps/c5071c7a7e004f72ae485e8a72911afc/dist/co2-suite.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"CO2",
                     "output":"ui",
                     "use_ai":false
                 },
@@ -110,128 +1558,92 @@
                     "errors":"ui",
                     "extension_file":"bapps/db57ecbe2cb7446292a94aa6181c9278/build/libs/content-type-converter-all.jar",
                     "extension_type":"java",
-                    "loaded":false,
+                    "loaded":true,
                     "name":"Content Type Converter",
                     "output":"ui",
                     "use_ai":false
                 },
                 {
                     "auto_reload":false,
-                    "bapp_serial_version":13,
-                    "bapp_uuid":"36238b534a78494db9bf2d03f112265c",
+                    "bapp_serial_version":2,
+                    "bapp_uuid":"71548f4df67945fdb81177db1f5e8984",
                     "errors":"ui",
-                    "extension_file":"bapps/36238b534a78494db9bf2d03f112265c/retirejs-burp-plugin/target/burp-retire-js-3.jar",
+                    "extension_file":"bapps/71548f4df67945fdb81177db1f5e8984/build/libs/api-parser-1.0-SNAPSHOT.jar",
                     "extension_type":"java",
-                    "loaded":false,
-                    "name":"Retire.js",
-                    "output":"ui",
-                    "use_ai":false
-                },
-                {
-                    "auto_reload":false,
-                    "bapp_serial_version":20,
-                    "bapp_uuid":"26aaa5ded2f74beea19e2ed8345a93dd",
-                    "errors":"ui",
-                    "extension_file":"bapps/26aaa5ded2f74beea19e2ed8345a93dd/build/libs/jwt-editor-2.6.jar",
-                    "extension_type":"java",
-                    "loaded":false,
-                    "name":"JWT Editor",
-                    "output":"ui",
-                    "use_ai":false
-                },
-                {
-                    "auto_reload":false,
-                    "bapp_serial_version":36,
-                    "bapp_uuid":"17d2949a985c4b7ca092728dba871943",
-                    "errors":"ui",
-                    "extension_file":"bapps/17d2949a985c4b7ca092728dba871943/param-miner-all.jar",
-                    "extension_type":"java",
-                    "loaded":false,
-                    "name":"Param Miner",
-                    "output":"ui",
-                    "use_ai":false
-                },
-                {
-                    "auto_reload":false,
-                    "bapp_serial_version":8,
-                    "bapp_uuid":"0ab7a94d8e11449daaf0fb387431225b",
-                    "errors":"ui",
-                    "extension_file":"bapps/0ab7a94d8e11449daaf0fb387431225b/build/libs/burp-JS-Miner-all.jar",
-                    "extension_type":"java",
-                    "loaded":false,
-                    "name":"JS Miner",
-                    "output":"ui",
-                    "use_ai":false
-                },
-                {
-                    "auto_reload":false,
-                    "bapp_serial_version":33,
-                    "bapp_uuid":"f923cbf91698420890354c1d8958fee6",
-                    "errors":"ui",
-                    "extension_file":"bapps/f923cbf91698420890354c1d8958fee6/build/libs/JWT4B_Montoya-1.0-SNAPSHOT.jar",
-                    "extension_type":"java",
-                    "loaded":false,
-                    "name":"JSON Web Tokens",
-                    "output":"ui",
-                    "use_ai":false
-                },
-                {
-                    "auto_reload":false,
-                    "bapp_serial_version":36,
-                    "bapp_uuid":"f9bbac8c4acf4aefa4d7dc92a991af2f",
-                    "errors":"ui",
-                    "extension_file":"bapps/f9bbac8c4acf4aefa4d7dc92a991af2f/Autorize.py",
-                    "extension_type":"python",
-                    "loaded":false,
-                    "name":"Autorize",
+                    "loaded":true,
+                    "name":"API Exporter",
                     "output":"ui",
                     "use_ai":false
                 },
                 {
                     "auto_reload":false,
                     "bapp_serial_version":1,
-                    "bapp_uuid":"0e61c786db0c4ac787a08c4516d52ccf",
+                    "bapp_uuid":"466bc6cbf5bb4449b56af7bd9c0000ea",
                     "errors":"ui",
-                    "extension_file":"bapps/0e61c786db0c4ac787a08c4516d52ccf/FransLinkfinder.py",
-                    "extension_type":"python",
-                    "loaded":false,
-                    "name":"JS Link Finder",
-                    "output":"ui",
-                    "use_ai":false
-                },
-                {
-                    "auto_reload":false,
-                    "bapp_serial_version":51,
-                    "bapp_uuid":"aaaa60ef945341e8a450217a54a11646",
-                    "errors":"ui",
-                    "extension_file":"bapps/aaaa60ef945341e8a450217a54a11646/desynchronize-all.jar",
+                    "extension_file":"bapps/466bc6cbf5bb4449b56af7bd9c0000ea/build/libs/backup-finder.jar",
                     "extension_type":"java",
-                    "loaded":false,
-                    "name":"HTTP Request Smuggler",
+                    "loaded":true,
+                    "name":"Backup Finder",
                     "output":"ui",
                     "use_ai":false
                 },
                 {
                     "auto_reload":false,
-                    "bapp_serial_version":22,
-                    "bapp_uuid":"470b7057b86f41c396a97903377f3d81",
+                    "bapp_serial_version":9,
+                    "bapp_uuid":"41274be469184a56b06d6a791ce8a9ce",
                     "errors":"ui",
-                    "extension_file":"bapps/470b7057b86f41c396a97903377f3d81/releases/LoggerPlusPlus.jar",
+                    "extension_file":"bapps/41274be469184a56b06d6a791ce8a9ce/build/libs/extensibility-helper-3.1.0.jar",
                     "extension_type":"java",
-                    "loaded":false,
-                    "name":"Logger++",
+                    "loaded":true,
+                    "name":"Extensibility Helper",
                     "output":"ui",
                     "use_ai":false
                 },
                 {
                     "auto_reload":false,
-                    "bapp_serial_version":5,
-                    "bapp_uuid":"444407b96d9c4de0adb7aed89e826122",
+                    "bapp_serial_version":1,
+                    "bapp_uuid":"19c6fa5cca1f4589b70cf19a9f71e7b8",
                     "errors":"ui",
-                    "extension_file":"bapps/444407b96d9c4de0adb7aed89e826122/403Bypasser.py",
+                    "extension_file":"bapps/19c6fa5cca1f4589b70cf19a9f71e7b8/429Bypasser.py",
                     "extension_type":"python",
-                    "loaded":false,
-                    "name":"403 Bypasser",
+                    "loaded":true,
+                    "name":"429 Bypasser",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":2,
+                    "bapp_uuid":"517909d862cd4d3dbc48c4cc1dc61f87",
+                    "errors":"ui",
+                    "extension_file":"bapps/517909d862cd4d3dbc48c4cc1dc61f87/MagicByteSelector.py",
+                    "extension_type":"python",
+                    "loaded":true,
+                    "name":"Magic Byte Selector",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":24,
+                    "bapp_uuid":"a7609ae2055342e9b6ffcf7cbcacf019",
+                    "errors":"ui",
+                    "extension_file":"bapps/a7609ae2055342e9b6ffcf7cbcacf019/HaE.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"Highlighter And Extractor",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":1,
+                    "bapp_uuid":"ec3af606a17e4da29701dfc4dd0def8a",
+                    "errors":"ui",
+                    "extension_file":"bapps/ec3af606a17e4da29701dfc4dd0def8a/build/libs/license-title-cleaner.jar",
+                    "extension_type":"java",
+                    "loaded":true,
+                    "name":"License Title Cleaner",
                     "output":"ui",
                     "use_ai":false
                 },
@@ -249,97 +1661,37 @@
                 },
                 {
                     "auto_reload":false,
-                    "bapp_serial_version":27,
-                    "bapp_uuid":"7db49799266c4f85866f54d9eab82c89",
-                    "errors":"ui",
-                    "extension_file":"bapps/7db49799266c4f85866f54d9eab82c89/target/AuthAnalyzer-1.1.14-jar-with-dependencies.jar",
-                    "extension_type":"java",
-                    "loaded":false,
-                    "name":"Auth Analyzer",
-                    "output":"ui",
-                    "use_ai":false
-                },
-                {
-                    "auto_reload":false,
-                    "bapp_serial_version":29,
-                    "bapp_uuid":"9cff8c55432a45808432e26dbb2b41d8",
-                    "errors":"ui",
-                    "extension_file":"bapps/9cff8c55432a45808432e26dbb2b41d8/build/libs/backslash-powered-scanner.jar",
-                    "extension_type":"java",
-                    "loaded":false,
-                    "name":"Backslash Powered Scanner",
-                    "output":"ui",
-                    "use_ai":false
-                },
-                {
-                    "auto_reload":false,
-                    "bapp_serial_version":61,
-                    "bapp_uuid":"65033cbd2c344fbabe57ac060b5dd100",
-                    "errors":"ui",
-                    "extension_file":"bapps/65033cbd2c344fbabe57ac060b5dd100/hackvertor-all.jar",
-                    "extension_type":"java",
-                    "loaded":false,
-                    "name":"Hackvertor",
-                    "output":"ui",
-                    "use_ai":false
-                },
-                {
-                    "auto_reload":false,
-                    "bapp_serial_version":5,
-                    "bapp_uuid":"82d6c60490b540369d6d5d01822bdf61",
-                    "errors":"ui",
-                    "extension_file":"bapps/82d6c60490b540369d6d5d01822bdf61/target/JOSEPH-1.0.2.jar",
-                    "extension_type":"java",
-                    "loaded":false,
-                    "name":"JSON Web Token Attacker",
-                    "output":"ui",
-                    "use_ai":false
-                },
-                {
-                    "auto_reload":false,
-                    "bapp_serial_version":5,
-                    "bapp_uuid":"ae2611da3bbc4687953a1f4ba6a4e04c",
-                    "errors":"ui",
-                    "extension_file":"bapps/ae2611da3bbc4687953a1f4ba6a4e04c/build/libs/bypass-waf-all.jar",
-                    "extension_type":"java",
-                    "loaded":false,
-                    "name":"Bypass WAF",
-                    "output":"ui",
-                    "use_ai":false
-                },
-                {
-                    "auto_reload":false,
                     "bapp_serial_version":3,
-                    "bapp_uuid":"523ae48da61745aaa520ef689e75033b",
+                    "bapp_uuid":"ba17d9fb487448b48368c22cb70048dc",
                     "errors":"ui",
-                    "extension_file":"bapps/523ae48da61745aaa520ef689e75033b/build/libs/Burp-IISTildeEnumerationScanner-all-2.0.jar",
+                    "extension_file":"bapps/ba17d9fb487448b48368c22cb70048dc/build/libs/viewstate-editor-1.0.jar",
                     "extension_type":"java",
                     "loaded":false,
-                    "name":"IIS Tilde Enumeration Scanner",
+                    "name":"ViewState Editor",
                     "output":"ui",
                     "use_ai":false
                 },
                 {
                     "auto_reload":false,
-                    "bapp_serial_version":2,
-                    "bapp_uuid":"517909d862cd4d3dbc48c4cc1dc61f87",
+                    "bapp_serial_version":6,
+                    "bapp_uuid":"7ec6d429fed04cdcb6243d8ba7358880",
                     "errors":"ui",
-                    "extension_file":"bapps/517909d862cd4d3dbc48c4cc1dc61f87/MagicByteSelector.py",
-                    "extension_type":"python",
+                    "extension_file":"bapps/7ec6d429fed04cdcb6243d8ba7358880/target/J2EEScan-1.2.6-jar-with-dependencies.jar",
+                    "extension_type":"java",
                     "loaded":false,
-                    "name":"Magic Byte Selector",
+                    "name":"J2EEScan",
                     "output":"ui",
                     "use_ai":false
                 },
                 {
                     "auto_reload":false,
-                    "bapp_serial_version":1,
-                    "bapp_uuid":"4841f0d78a554ca381c65b26d48207e6",
+                    "bapp_serial_version":16,
+                    "bapp_uuid":"228336544ebe4e68824b5146dbbd93ae",
                     "errors":"ui",
-                    "extension_file":"bapps/4841f0d78a554ca381c65b26d48207e6/target/gql-jar-with-dependencies.jar",
+                    "extension_file":"bapps/228336544ebe4e68824b5146dbbd93ae/target/JavaDeserializationScanner-0.7-jar-with-dependencies.jar",
                     "extension_type":"java",
                     "loaded":false,
-                    "name":"GraphQL Raider",
+                    "name":"Java Deserialization Scanner",
                     "output":"ui",
                     "use_ai":false
                 },
@@ -358,36 +1710,48 @@
                 {
                     "auto_reload":false,
                     "bapp_serial_version":2,
-                    "bapp_uuid":"50fd63182afe43b7a3cf99b523f313f9",
+                    "bapp_uuid":"605a859f0a814f0cbbdce92bc64233b4",
                     "errors":"ui",
-                    "extension_file":"bapps/50fd63182afe43b7a3cf99b523f313f9/build/libs/Bypass-Bot-Detection-0.0.6.jar",
+                    "extension_file":"bapps/605a859f0a814f0cbbdce92bc64233b4/build/libs/nosqli-scanner-all-1.0.jar",
                     "extension_type":"java",
                     "loaded":false,
-                    "name":"Bypass Bot Detection",
+                    "name":"NoSQLi Scanner",
                     "output":"ui",
                     "use_ai":false
                 },
                 {
                     "auto_reload":false,
-                    "bapp_serial_version":10,
-                    "bapp_uuid":"81e073a640964b2ea3af0da93d048dbd",
+                    "bapp_serial_version":3,
+                    "bapp_uuid":"e2a137ad44984ccb908375fa5b2c618d",
                     "errors":"ui",
-                    "extension_file":"bapps/81e073a640964b2ea3af0da93d048dbd/target/SensitiveDiscoverer-4.2.0-jar-with-dependencies.jar",
+                    "extension_file":"bapps/e2a137ad44984ccb908375fa5b2c618d/build/libs/dotnet-beautifier-all.jar",
                     "extension_type":"java",
                     "loaded":false,
-                    "name":"Sensitive Discoverer",
+                    "name":".NET Beautifier",
                     "output":"ui",
                     "use_ai":false
                 },
                 {
                     "auto_reload":false,
-                    "bapp_serial_version":7,
-                    "bapp_uuid":"9952290f04ed4f628e624d0aa9dccebc",
+                    "bapp_serial_version":12,
+                    "bapp_uuid":"b2244cbb6953442cb3c82fa0a0d908fa",
                     "errors":"ui",
-                    "extension_file":"bapps/9952290f04ed4f628e624d0aa9dccebc/burp-mcp-all.jar",
+                    "extension_file":"bapps/b2244cbb6953442cb3c82fa0a0d908fa/UploadScanner.py",
+                    "extension_type":"python",
+                    "loaded":false,
+                    "name":"Upload Scanner",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":25,
+                    "bapp_uuid":"6bf7574b632847faaaa4eb5e42f1757c",
+                    "errors":"ui",
+                    "extension_file":"bapps/6bf7574b632847faaaa4eb5e42f1757c/build/libs/openapi-parser-all.jar",
                     "extension_type":"java",
                     "loaded":false,
-                    "name":"MCP Server",
+                    "name":"OpenAPI Parser",
                     "output":"ui",
                     "use_ai":false
                 },
@@ -405,25 +1769,143 @@
                 },
                 {
                     "auto_reload":false,
-                    "bapp_serial_version":3,
-                    "bapp_uuid":"eb75d39684b845adb457bcb050d1aa1d",
                     "errors":"ui",
-                    "extension_file":"bapps/eb75d39684b845adb457bcb050d1aa1d/releases/xss-cheatsheet-1.0.jar",
+                    "extension_file":"/opt/BurpSuitePro/extensions/Burp-Awesome-TLS-linux-amd64.jar",
                     "extension_type":"java",
-                    "loaded":true,
-                    "name":"XSS Cheatsheet",
+                    "loaded":false,
+                    "name":"Awesome TLS",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":10,
+                    "bapp_uuid":"8ef2db1173e8432c8797831c2e730727",
+                    "errors":"ui",
+                    "extension_file":"bapps/8ef2db1173e8432c8797831c2e730727/build/libs/OAUTHscan-all-1.2.jar",
+                    "extension_type":"java",
+                    "loaded":false,
+                    "name":"OAUTH Scan",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":7,
+                    "bapp_uuid":"ae1cce0c6d6c47528b4af35faebc3ab3",
+                    "errors":"ui",
+                    "extension_file":"bapps/ae1cce0c6d6c47528b4af35faebc3ab3/build/libs/freddy-2.2.4.jar",
+                    "extension_type":"java",
+                    "loaded":false,
+                    "name":"Freddy, Deserialization Bug Finder",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":6,
+                    "bapp_uuid":"2eb2b1cb1cf34cc79cda36f0f9019874",
+                    "errors":"ui",
+                    "extension_file":"bapps/2eb2b1cb1cf34cc79cda36f0f9019874/IPRotate.py",
+                    "extension_type":"python",
+                    "loaded":false,
+                    "name":"IP Rotate",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":5,
+                    "bapp_uuid":"858352a27e6e4a6caa802e61fdeb7dd4",
+                    "errors":"ui",
+                    "extension_file":"bapps/858352a27e6e4a6caa802e61fdeb7dd4/target/BurpExifToolScanner-1.0.9.jar",
+                    "extension_type":"java",
+                    "loaded":false,
+                    "name":"ExifTool Scanner",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":6,
+                    "bapp_uuid":"27f89b068a3045649d4df77a863209c1",
+                    "errors":"ui",
+                    "extension_file":"bapps/27f89b068a3045649d4df77a863209c1/burp_variables-1.2.0.jar",
+                    "extension_type":"java",
+                    "loaded":false,
+                    "name":"Burp Variables",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":4,
+                    "bapp_uuid":"94135ed444c84cc095c72e6520bcc583",
+                    "errors":"ui",
+                    "extension_file":"bapps/94135ed444c84cc095c72e6520bcc583/target_repo-all.jar",
+                    "extension_type":"java",
+                    "loaded":false,
+                    "name":"Kerberos Authentication",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":8,
+                    "bapp_uuid":"4826bfa0c67d41a8b518139186693131",
+                    "errors":"ui",
+                    "extension_file":"bapps/4826bfa0c67d41a8b518139186693131/PyCript-2.0.jar",
+                    "extension_type":"java",
+                    "loaded":false,
+                    "name":"PyCript",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":2,
+                    "bapp_uuid":"a348d765704c42d39dc4a4bdfb439ff0",
+                    "errors":"ui",
+                    "extension_file":"bapps/a348d765704c42d39dc4a4bdfb439ff0/Burp Heapdump checker.py",
+                    "extension_type":"python",
+                    "loaded":false,
+                    "name":"Spring Boot Dump Scanner",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":4,
+                    "bapp_uuid":"07d944f6324d4ae5bc4e71f87864ec8b",
+                    "errors":"ui",
+                    "extension_file":"bapps/07d944f6324d4ae5bc4e71f87864ec8b/target_repo-main-SNAPSHOT.jar",
+                    "extension_type":"java",
+                    "loaded":false,
+                    "name":"Java Object Deserializer",
+                    "output":"ui",
+                    "use_ai":false
+                },
+                {
+                    "auto_reload":false,
+                    "bapp_serial_version":3,
+                    "bapp_uuid":"63b92be302fa4521bf18d74b3adbbc00",
+                    "errors":"ui",
+                    "extension_file":"bapps/63b92be302fa4521bf18d74b3adbbc00/grpc_web_burp_extension.py",
+                    "extension_type":"python",
+                    "loaded":false,
+                    "name":"gRPC-Web Coder",
                     "output":"ui",
                     "use_ai":false
                 },
                 {
                     "auto_reload":false,
                     "bapp_serial_version":1,
-                    "bapp_uuid":"ec3af606a17e4da29701dfc4dd0def8a",
+                    "bapp_uuid":"48ac18e2eddb4c36a28cece73a6fe39d",
                     "errors":"ui",
-                    "extension_file":"bapps/ec3af606a17e4da29701dfc4dd0def8a/build/libs/license-title-cleaner.jar",
+                    "extension_file":"bapps/48ac18e2eddb4c36a28cece73a6fe39d/build/libs/burpmontoyacognito-0.1.7-fatjar.jar",
                     "extension_type":"java",
-                    "loaded":true,
-                    "name":"License Title Cleaner",
+                    "loaded":false,
+                    "name":"AWS Cognito",
                     "output":"ui",
                     "use_ai":false
                 }
@@ -433,7 +1915,7 @@
             },
             "python":{
                 "folder_for_loading_modules":"",
-                "location_of_jython_standalone_jar_file":"/opt/tools/jython/jython-standalone-2.7.4.jar"
+                "location_of_jython_standalone_jar_file":"/opt/BurpSuitePro/jython-standalone-2.7.4.jar"
             },
             "ruby":{
                 "location_of_jruby_jar_file":""
@@ -780,9 +2262,9 @@
                 }
             ],
             "out_of_scope_history_logging_action":"disable",
-            "pause_tasks_at_startup_default":true,
-            "submit_feedback":true,
-            "suppress_confirm_on_close":false,
+            "pause_tasks_at_startup_default":false,
+            "submit_feedback":false,
+            "suppress_confirm_on_close":true,
             "temporary_files_location":"",
             "uninteresting_headers":{
                 "hide_uninteresting_headers_by_default":false,
@@ -857,6 +2339,7 @@
             "client_certificates":{
                 "certificates":[]
             },
+            "custom_ca_certificates":[],
             "negotiation":{
                 "disable_sni_extension":false,
                 "enable_blocked_algorithms":true
