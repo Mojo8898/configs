@@ -866,7 +866,7 @@
                     "errors":"ui",
                     "extension_file":"bapps/866df66d339d4bcd9b599772aff32efd/CSTC-1.3.6.jar",
                     "extension_type":"java",
-                    "loaded":true,
+                    "loaded":false,
                     "name":"CSTC, Modular HTTP Manipulator",
                     "output":"ui",
                     "use_ai":false
