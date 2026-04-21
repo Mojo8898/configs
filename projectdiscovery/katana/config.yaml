@@ -1,0 +1,13 @@
+# --- CONFIGURATION ---
+depth: 3
+js-crawl: true
+jsluice: true
+known-files: all
+form-extraction: true
+tech-detect: true
+ignore-query-params: true
+filter-similar: true
+path-climb: true
+
+# --- RATE-LIMIT ---
+concurrency: 50

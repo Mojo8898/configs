@@ -459,7 +459,7 @@
             },
             "by_request_type":{
                 "hide_items_without_responses":false,
-                "show_only_in_scope_items":true,
+                "show_only_in_scope_items":false,
                 "show_only_parameterized_requests":false
             },
             "by_search":{
@@ -654,7 +654,7 @@
         ],
         "miscellaneous":{
             "disable_logging_to_history_and_site_map":false,
-            "disable_out_of_scope_logging_to_history_and_site_map":true,
+            "disable_out_of_scope_logging_to_history_and_site_map":false,
             "disable_web_interface":false,
             "remove_unsupported_encodings_from_accept_encoding_headers_in_incoming_requests":true,
             "set_connection_close_header_on_responses":false,
