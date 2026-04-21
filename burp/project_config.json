@@ -693,7 +693,33 @@
         "ssl_pass_through":{
             "apply_to_out_of_scope_items":true,
             "automatically_add_entries_on_client_ssl_negotiation_failure":false,
-            "rules":[]
+            "rules":[
+                {
+                    "enabled":true,
+                    "host":"(^|\\.)pki\\.goog$",
+                    "protocol":"any"
+                },
+                {
+                    "enabled":true,
+                    "host":"(^|\\.)(mozilla\\.(com|org|net)|firefox\\.com)$",
+                    "protocol":"any"
+                },
+                {
+                    "enabled":true,
+                    "host":"(^|\\.)(redditstatic\\.com|cookieeditor\\.org|datafa\\.st)$",
+                    "protocol":"any"
+                },
+                {
+                    "enabled":true,
+                    "host":"(^|\\.)(doubleclick\\.net|adroll\\.com|tapad\\.com|ads-twitter\\.com|t\\.co)$",
+                    "protocol":"any"
+                },
+                {
+                    "enabled":true,
+                    "host":"(^|\\.)(hsadspixel\\.net|hs-analytics\\.net|hs-banner\\.com|hs-scripts\\.com)$",
+                    "protocol":"any"
+                }
+            ]
         },
         "web_sockets_history_display_filter":{
             "by_annotation":{
@@ -819,25 +845,9 @@
             "filter_mode":"SETTINGS"
         },
         "scope":{
-            "advanced_mode":true,
-            "exclude":[
-                {
-                    "enabled":true,
-                    "host":"(^|\\.)((cookieeditor\\.org|datafa\\.st|firefox\\.com|google-analytics\\.com|googleapis\\.com|google\\.com|googletagmanager\\.com|googleusercontent\\.com|gstatic\\.com|mozilla\\.com|mozilla\\.org|mozilla\\.net))$",
-                    "protocol":"any"
-                },
-                {
-                    "enabled":true,
-                    "host":"(^|\\.)((doubleclick\\.net|adroll\\.com|tapad\\.com|ads-twitter\\.com|t\\.co|aplo-evnt\\.com|apollo\\.io|hockeystack\\.com|oktopost\\.com|hubspot\\.com|hsadspixel\\.net|hs-analytics\\.net|hs-banner\\.com|hs-scripts\\.com|appcues\\.com|appcues\\.net|usemessages\\.com|facebook\\.com|facebook\\.net|reddit\\.com|redditstatic\\.com|twitter\\.com))$",
-                    "protocol":"any"
-                }
-            ],
-            "include":[
-                {
-                    "enabled":true,
-                    "protocol":"any"
-                }
-            ]
+            "advanced_mode":false,
+            "exclude":[],
+            "include":[]
         }
     }
 }
