@@ -1496,7 +1496,7 @@
                 {
                     "auto_reload":false,
                     "errors":"ui",
-                    "extension_file":"/opt/tools/agartha/Agartha.py",
+                    "extension_file":"/opt/BurpSuitePro/extensions/agartha/Agartha.py",
                     "extension_type":"python",
                     "loaded":true,
                     "name":"Agartha",
@@ -2327,9 +2327,9 @@
         },
         "proxy":{
             "default_display_message":{
-                "request":"auto-modified",
-                "response":"auto-modified",
-                "websocket":"auto-modified"
+                "request":"edited",
+                "response":"edited",
+                "websocket":"edited"
             }
         },
         "repeater":{
