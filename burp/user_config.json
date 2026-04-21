@@ -878,7 +878,7 @@
                     "errors":"ui",
                     "extension_file":"bapps/2495f6fb364d48c3b6c984e226c02968/CollaboratorEverywhere-2.0.3.jar",
                     "extension_type":"java",
-                    "loaded":true,
+                    "loaded":false,
                     "name":"Collaborator Everywhere",
                     "output":"ui",
                     "use_ai":false
