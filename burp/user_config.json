@@ -1089,18 +1089,6 @@
                 },
                 {
                     "auto_reload":false,
-                    "bapp_serial_version":2,
-                    "bapp_uuid":"e62afa49e12543edbfa9df498363153c",
-                    "errors":"ui",
-                    "extension_file":"bapps/e62afa49e12543edbfa9df498363153c/build/libs/sign-saboteur-1.0.6.jar",
-                    "extension_type":"java",
-                    "loaded":true,
-                    "name":"SignSaboteur, Web Token Signer",
-                    "output":"ui",
-                    "use_ai":false
-                },
-                {
-                    "auto_reload":false,
                     "bapp_serial_version":10,
                     "bapp_uuid":"81e073a640964b2ea3af0da93d048dbd",
                     "errors":"ui",
