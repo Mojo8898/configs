@@ -854,7 +854,7 @@
                     "errors":"ui",
                     "extension_file":"bapps/51327b097b354243b307b4ed87ba39eb/target/ATOR-v2.3.0-SNAPSHOT-jar-with-dependencies.jar",
                     "extension_type":"java",
-                    "loaded":true,
+                    "loaded":false,
                     "name":"Authentication Token Obtain and Replace",
                     "output":"ui",
                     "use_ai":false
@@ -1017,10 +1017,10 @@
                 },
                 {
                     "auto_reload":false,
-                    "bapp_serial_version":5,
+                    "bapp_serial_version":6,
                     "bapp_uuid":"3908768b9ae945d8adf583052ad2e3b3",
                     "errors":"ui",
-                    "extension_file":"bapps/3908768b9ae945d8adf583052ad2e3b3/build/libs/host_header_inchecktion-1.2.3.jar",
+                    "extension_file":"bapps/3908768b9ae945d8adf583052ad2e3b3/host_header_inchecktion-1.3.0.jar",
                     "extension_type":"java",
                     "loaded":true,
                     "name":"Host Header Inchecktion",
@@ -1077,10 +1077,10 @@
                 },
                 {
                     "auto_reload":false,
-                    "bapp_serial_version":20,
+                    "bapp_serial_version":21,
                     "bapp_uuid":"26aaa5ded2f74beea19e2ed8345a93dd",
                     "errors":"ui",
-                    "extension_file":"bapps/26aaa5ded2f74beea19e2ed8345a93dd/build/libs/jwt-editor-2.6.jar",
+                    "extension_file":"bapps/26aaa5ded2f74beea19e2ed8345a93dd/jwt-editor-2.6.1.jar",
                     "extension_type":"java",
                     "loaded":true,
                     "name":"JWT Editor",
@@ -1418,18 +1418,6 @@
                     "extension_type":"java",
                     "loaded":true,
                     "name":"UnUnicode",
-                    "output":"ui",
-                    "use_ai":false
-                },
-                {
-                    "auto_reload":false,
-                    "bapp_serial_version":44,
-                    "bapp_uuid":"3c5025b0e19d419a8f339ee0c30391dd",
-                    "errors":"ui",
-                    "extension_file":"bapps/3c5025b0e19d419a8f339ee0c30391dd/releases/sharpener.jar",
-                    "extension_type":"java",
-                    "loaded":true,
-                    "name":"Sharpener",
                     "output":"ui",
                     "use_ai":false
                 },
@@ -2249,7 +2237,7 @@
                     "wrap_text":false
                 }
             ],
-            "out_of_scope_history_logging_action":"prompt",
+            "out_of_scope_history_logging_action":"disable",
             "pause_tasks_at_startup_default":false,
             "submit_feedback":false,
             "suppress_confirm_on_close":true,
