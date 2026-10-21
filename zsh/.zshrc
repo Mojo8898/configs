@@ -400,3 +400,6 @@ export BH_TOKEN_KEY=""  # Set your BloodHound CE token key here
 
 fpath=(/root/.zsh/completions $fpath)
 autoload -Uz compinit && compinit
+
+setopt SHARE_HISTORY
+[[ $- == *i* ]] && stty -ixon

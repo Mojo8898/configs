@@ -1,0 +1,22 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "model": "opus",
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh",
+    "padding": 0
+  },
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    }
+  },
+  "theme": "dark",
+  "switchModelsOnFlag": true,
+  "permissions": {
+    "defaultMode": "auto"
+  }
+}
