@@ -212,7 +212,10 @@ preflight() {
   log "kali-setup started $(date -Iseconds)"
 
   # PATH that covers everything we install, for this non-interactive run.
-  export PATH="/opt/tools/bin:$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/go/bin:$PATH"
+  # /usr/local/bin is explicit: managed tools (uv/go/cargo) land there, and
+  # sudo's secure_path may omit it, so post-install hooks (bbot, nuclei -up, …)
+  # that call those tools by name would 127 if we relied on inheritance.
+  export PATH="/opt/tools/bin:/usr/local/bin:/usr/local/sbin:$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/go/bin:$PATH"
   export GOPATH="${GOPATH:-$HOME/go}"
 
   # Install tool binaries into a shared /opt/tools/bin (on every user's PATH via

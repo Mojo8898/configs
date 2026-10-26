@@ -70,7 +70,9 @@ preflight() {
   log "update-tools started $(date -Iseconds)"
 
   # Same shared locations kali-setup.sh installs into, so updates land there.
-  export PATH="/opt/tools/bin:$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/go/bin:$PATH"
+  # /usr/local/bin explicit: managed tools live there and sudo's secure_path may
+  # omit it, so tools called by name (nuclei -up, bbot, …) would 127 otherwise.
+  export PATH="/opt/tools/bin:/usr/local/bin:/usr/local/sbin:$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/go/bin:$PATH"
   export GOPATH="${GOPATH:-$HOME/go}"
   export GOBIN=/usr/local/bin
   export GOTMPDIR="$HOME/.cache/go-tmp"; mkdir -p "$GOTMPDIR"
