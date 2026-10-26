@@ -9,7 +9,6 @@
 set -uo pipefail
 
 # Config (override via env or flags)
-SSH_PUBKEY="${SSH_PUBKEY:-}"          # public key for the aliasr 'copy private key' cheat
 HTB_TOKEN="${HTB_TOKEN:-}"            # HackTheBox token  -> written into configs.zsh
 BH_TOKEN_ID="${BH_TOKEN_ID:-}"        # BloodHound token id -> configs.zsh
 BH_TOKEN_KEY="${BH_TOKEN_KEY:-}"      # BloodHound token key -> configs.zsh
@@ -346,9 +345,12 @@ setup_vscode() {
 setup_python() {
   banner "Python tooling (uv)"
 
-  if ! command -v uv >/dev/null 2>&1; then
-    run_sh "install uv" "curl -LsSf https://astral.sh/uv/install.sh | sh"
-    export PATH="$HOME/.local/bin:$PATH"; hash -r
+  # Install uv itself into /usr/local/bin (on PATH + secure_path, all users) so
+  # it's always resolvable — not a per-user ~/.local/bin that isn't on PATH.
+  if [[ ! -x /usr/local/bin/uv ]]; then
+    run_sh "install uv" \
+      "curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR=/usr/local/bin UV_NO_MODIFY_PATH=1 sh"
+    hash -r
   else
     ok "uv already installed"
   fi
@@ -512,7 +514,6 @@ setup_bloodhound() {
   elif [[ -x /opt/tools/bin/bloodhound-cli ]]; then
     run_sh "bloodhound-cli install" \
       "cd /opt/tools/bin && ./bloodhound-cli install && touch /opt/tools/bin/.bloodhound-installed"
-    note "BloodHound: initial admin credentials are printed during install — check $LOGFILE if you missed them."
   fi
 
   # Web UI port 8080 -> 8081 (needs sed -i; a bare sed only prints, it doesn't
@@ -520,7 +521,17 @@ setup_bloodhound() {
   if [[ -d /root/.config/bloodhound ]]; then
     run_sh "bloodhound port 8080 -> 8081" "cd /root/.config/bloodhound && sed -i 's/8080/8081/g' *"
     run_sh "bloodhound-cli update (latest images)" "cd /opt/tools/bin && ./bloodhound-cli update"
-    note "BloodHound web UI is on port 8081. If containers were already up on 8080, run: bloodhound-cli restart"
+  fi
+
+  # Print the default admin login from the deployed config.
+  local bhconf=/root/.config/bloodhound/bloodhound.config.json
+  if [[ -f "$bhconf" ]]; then
+    local bhuser bhpass bhurl
+    bhuser="$(jq -r '.default_admin.principal_name // "admin"' "$bhconf" 2>/dev/null)"
+    bhpass="$(jq -r '.default_password // .default_admin.password // empty' "$bhconf" 2>/dev/null)"
+    bhurl="$(jq -r '.root_url // empty' "$bhconf" 2>/dev/null)"
+    [[ -n "$bhpass" ]] && \
+      say "${c_grn}BloodHound login:${c_rst} ${bhuser} / ${bhpass}${bhurl:+  ($bhurl)}"
   fi
 }
 
@@ -635,7 +646,6 @@ setup_tmux() {
   gclone https://github.com/tmux-plugins/tpm                "$REPO_DIR/tmux/plugins/tpm"
   gclone https://github.com/MunifTanjim/tmux-mode-indicator "$REPO_DIR/tmux/plugins/tmux-mode-indicator"
   chmod -R a+rX "$REPO_DIR/tmux/plugins" /etc/tmux.conf 2>/dev/null || true
-  note "tmux is global via /etc/tmux.conf sourcing $REPO_DIR/tmux/tmux.conf — edit the repo and re-pull (or --only tmux); restart the tmux server to apply."
 }
 
 # configs — zshrc, ffufrc, snmp.conf, chromium policy, aliasr cheats
@@ -710,7 +720,6 @@ EOF
   # Kali's default terminal is qterminal; TerminalTransparency=0 = opaque.
   set_qterminal_opaque /etc/xdg/qterminal.org/qterminal.ini
   ok "qterminal transparency -> 0 (opaque; system default /etc/xdg)"
-  note "qterminal: default set in /etc/xdg. A user who already opened qterminal has their own ~/.config/qterminal.org/qterminal.ini, which overrides the default — delete that file to fall back to the system default."
 
   # --- system-wide PATH so every user gets the shared /opt tools --------- #
   cat > /etc/profile.d/zz-pentest-tools.sh <<'EOF'
@@ -742,19 +751,18 @@ EOF
   rm -f "$tmp"
 
   # --- aliasr cheat (no system-wide location; seed /etc/skel) ------------ #
+  # <public_key> is a fixed placeholder — fill it in on the box when needed.
   mkdir -p /etc/skel/.cheats
-  cat > /etc/skel/.cheats/custom.md <<CEOF
+  cat > /etc/skel/.cheats/custom.md <<'CEOF'
 # custom
 
 ## Copy private key
-\`\`\`
-mkdir ~/.ssh 2>/dev/null; echo '${SSH_PUBKEY:-<public_key>}' >> ~/.ssh/authorized_keys
-\`\`\`
+```
+mkdir ~/.ssh 2>/dev/null; echo '<public_key>' >> ~/.ssh/authorized_keys
+```
 CEOF
   ok "wrote aliasr cheat to /etc/skel"
   seed_homes .cheats/custom.md     # aliasr has no /etc config path — reach current users too
-  [[ -z "$SSH_PUBKEY" ]] && \
-    note "aliasr cheat has the <public_key> placeholder — set your key with --ssh-key or SSH_PUBKEY=..., then re-run --only configs."
 
   # Make zsh the default shell for root.
   command -v zsh >/dev/null 2>&1 && run "chsh root -> zsh" chsh -s "$(command -v zsh)" root
@@ -881,12 +889,16 @@ render_summary() {
     printf '%sAll steps completed without recorded failures.%s\n\n' "$c_grn" "$c_rst"
   fi
 
-  printf '%sManual steps still required:%s\n' "$c_yel" "$c_rst"
-  printf '  - Install browser extensions: FoxyProxy, Wappalyzer, OneTab, Cookie Editor.\n'
-  [[ "$DO_AUTOLOGIN" != "1" ]] && \
-    printf '  - Root autologin NOT configured (re-run with --autologin to enable).\n'
-  local n; for n in "${NOTES[@]}"; do printf '  - %s\n' "$n"; done
-  printf '\n'
+  # Only on a full install — a --only run isn't a complete setup, so the
+  # "manual steps" checklist would be misleading there.
+  if [[ -z "$ONLY" ]]; then
+    printf '%sManual steps still required:%s\n' "$c_yel" "$c_rst"
+    printf '  - Install browser extensions: FoxyProxy, Wappalyzer, OneTab, Cookie Editor.\n'
+    [[ "$DO_AUTOLOGIN" != "1" ]] && \
+      printf '  - Root autologin NOT configured (re-run with --autologin to enable).\n'
+    local n; for n in "${NOTES[@]}"; do printf '  - %s\n' "$n"; done
+    printf '\n'
+  fi
 
   if [[ "$mode" == postreboot ]]; then
     printf '%sShown once per user, on the first terminal after the setup reboot.%s\n' "$c_cyn" "$c_rst"
@@ -947,7 +959,6 @@ kali-setup.sh — provision a fresh Kali pentest box
 Options:
   --only  a,b,c     Run only these sections
   --skip  a,b,c     Run everything except these sections
-  --ssh-key "KEY"   Public key for the aliasr 'copy private key' cheat
   --autologin       Also configure root GUI autologin (off by default)
   --force           Re-run stateful steps that otherwise skip when already
                     set up (bloodhound-cli install, msfdb reinit)
@@ -966,7 +977,6 @@ main() {
     case "$1" in
       --only)      ONLY="$2"; shift 2 ;;
       --skip)      SKIP="$2"; shift 2 ;;
-      --ssh-key)   SSH_PUBKEY="$2"; shift 2 ;;
       --autologin) DO_AUTOLOGIN=1; shift ;;
       --force)     DO_FORCE=1; shift ;;
       --reboot)    DO_REBOOT=1; shift ;;
