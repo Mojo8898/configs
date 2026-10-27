@@ -351,6 +351,7 @@ setup_go() {
     "github.com/projectdiscovery/httpx/cmd/httpx@latest"
     "github.com/projectdiscovery/vulnx/v2/cmd/vulnx@latest"
     "github.com/projectdiscovery/naabu/v2/cmd/naabu@latest"
+    "github.com/projectdiscovery/mapcidr/cmd/mapcidr@latest"
   )
   for g in "${go_pkgs[@]}"; do
     run "go install $(basename "${g%@*}")" go install -v "$g"
@@ -363,6 +364,8 @@ setup_go() {
   run "nuclei -ut"  nuclei -ut
   run "httpx -up"   httpx -up
   run "vulnx --update" vulnx --update
+  run "naabu -up"   naabu -up
+  run "mapcidr -up" mapcidr -up
   run "katana -up"  katana -up
 }
 

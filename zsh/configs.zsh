@@ -23,6 +23,7 @@ export U="$USER" P="$PASSWORD" N="$NT_HASH" D="$DOMAIN" I="$IP"
 
 # Start in tmux (hotkey launch only)
 if [[ -o interactive ]] && [[ -n "$TMUX_HOTKEY" ]] && [[ -z "$TMUX" ]] && command -v tmux >/dev/null 2>&1; then
+    unset TMUX_HOTKEY
     if ! tmux ls >/dev/null 2>&1; then
         tmux new -s initial
     fi
