@@ -350,6 +350,7 @@ setup_go() {
     "github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest"
     "github.com/projectdiscovery/httpx/cmd/httpx@latest"
     "github.com/projectdiscovery/vulnx/v2/cmd/vulnx@latest"
+    "github.com/projectdiscovery/naabu/v2/cmd/naabu@latest"
   )
   for g in "${go_pkgs[@]}"; do
     run "go install $(basename "${g%@*}")" go install -v "$g"
