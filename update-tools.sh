@@ -40,19 +40,18 @@ run() {
 }
 run_sh() { local desc="$1"; shift; run "$desc" bash -c "$*"; }
 
-# have <cmd> — is the tool installed? Updates skip anything that isn't (this
-# script updates, it never installs — that's kali-setup.sh's job).
+# have <cmd> — installed? This script updates, never installs, so it skips
+# anything missing (install is kali-setup.sh's job).
 have() { command -v "$1" >/dev/null 2>&1; }
 
-# git_update <dir> — pull if it's a repo (shallow clones need unshallow first).
-# Returns 0 if HEAD moved (so a rebuild is warranted), 1 if unchanged/failed.
+# git_update <dir> — pull if it's a repo. Returns 0 if HEAD moved (rebuild
+# warranted), 1 if unchanged/failed.
 git_update() {
   [[ -d "$1/.git" ]] || { warn "not a repo: $1"; return 1; }
   local before after stashed=0
   before="$(git -C "$1" rev-parse HEAD 2>/dev/null)"
-  # Set aside local edits to tracked files (e.g. kali-setup's john.conf wordlist
-  # default) so a ff-only pull isn't blocked by a dirty worktree; restore after.
-  # Only tracked changes — untracked build output (venv/, dist/) is left alone.
+  # Stash tracked edits (e.g. john.conf) so a ff-only pull isn't blocked; restore
+  # after. Untracked build output (venv/, dist/) is left alone.
   git -C "$1" diff --quiet 2>/dev/null || { git -C "$1" stash push -q && stashed=1; }
   run_sh "git pull $(basename "$1")" "git -C '$1' pull --ff-only || git -C '$1' pull --ff-only --unshallow"
   [[ "$stashed" == 1 ]] && { git -C "$1" stash pop -q 2>/dev/null || warn "stash pop failed in $(basename "$1") — local tweaks not reapplied"; }
@@ -69,8 +68,7 @@ preflight() {
   : >"$LOGFILE" 2>/dev/null || LOGFILE="/tmp/update-tools.log"
   log "update-tools started $(date -Iseconds)"
 
-  # Same default locations kali-setup.sh installs into (uv -> ~/.local/bin,
-  # go -> ~/go/bin, cargo -> ~/.cargo/bin), plus the cloned-tools bin.
+  # Same default locations kali-setup.sh installs into, plus the cloned-tools bin.
   export PATH="/opt/tools/bin:$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/go/bin:$PATH"
   export GOPATH="${GOPATH:-$HOME/go}"
   export GOTMPDIR="$HOME/.cache/go-tmp"; mkdir -p "$GOTMPDIR"
@@ -86,7 +84,6 @@ setup_apt() {
     warn "apt full-upgrade (rc=$?, continuing)"; FAILED+=("apt full-upgrade"); fi
   cat "$out" >>"$LOGFILE"
   run "apt autoremove" apt-get autoremove -y
-  # Flag a reboot only if something reboot-relevant was reconfigured.
   if grep -qE '^Setting up (linux-image|linux-headers|open-vm-tools|libc6|systemd)' "$out"; then
     note "A kernel/open-vm-tools/core package was upgraded — reboot when convenient."
   fi
@@ -96,7 +93,7 @@ setup_apt() {
 setup_python() {
   banner "Python tools (uv)"
   have uv || { warn "uv not found — skipping"; FAILED+=("uv (missing)"); return 0; }
-  run "uv tool upgrade --all" uv tool upgrade --all   # upgrades only installed tools
+  run "uv tool upgrade --all" uv tool upgrade --all
   if have bbot; then run "bbot --install-all-deps" bbot --install-all-deps; else ok "not installed, skipped: bbot"; fi
   if have whatportis; then run_sh "whatportis --update" "yes | whatportis --update"; else ok "not installed, skipped: whatportis"; fi
 }
@@ -121,7 +118,7 @@ setup_go() {
   else
     ok "not installed, skipped: katana"
   fi
-  # Template / definition DB refreshes — only for tools that are installed.
+  # Template/DB refreshes — installed tools only.
   have nuclei && run "nuclei -up"     nuclei -up
   have nuclei && run "nuclei -ut"     nuclei -ut
   have httpx  && run "httpx -up"      httpx -up
@@ -133,7 +130,7 @@ setup_go() {
 setup_rust() {
   banner "Rust tools"
   have cargo || { warn "cargo not found — skipping"; FAILED+=("cargo (missing)"); return 0; }
-  # Re-install pulls the newest crates.io version if one exists (no-op if current).
+  # Re-install pulls the newest crates.io version (no-op if current).
   if have rusthound-ce; then run "cargo install rusthound-ce" cargo install rusthound-ce; else ok "not installed, skipped: rusthound-ce"; fi
   if have skewrun; then run "cargo install skewrun" cargo install skewrun; else ok "not installed, skipped: skewrun"; fi
 }
@@ -147,7 +144,7 @@ setup_ruby() {
 
 setup_gittools() {
   banner "Git-built tools (pull + rebuild)"
-  # Rebuild only when the pull actually moved HEAD — the builds are expensive.
+  # Rebuild only when the pull moved HEAD — the builds are expensive.
   # John the Ripper
   if [[ -d /opt/tools/john/.git ]]; then
     if git_update /opt/tools/john; then
@@ -166,7 +163,7 @@ setup_gittools() {
       run "fzf install (bin only)" /opt/tools/fzf/install --bin
     else ok "fzf unchanged — skip reinstall"; fi
   fi
-  # PCredz — refresh venv deps every run (pcapy-ng versions independently of the repo).
+  # PCredz — refresh venv deps every run (pcapy-ng versions independently).
   if [[ -d /opt/tools/PCredz/.git ]]; then
     git_update /opt/tools/PCredz || true
     [[ -x /opt/tools/PCredz/venv/bin/pip ]] && \
@@ -177,8 +174,7 @@ setup_gittools() {
 setup_bloodhound() {
   banner "BloodHound images"
   command -v bloodhound-cli >/dev/null 2>&1 || { warn "bloodhound-cli not found — skipping"; FAILED+=("bloodhound (missing)"); return 0; }
-  # Needs a responding Docker daemon.
-  local i
+  local i   # needs a responding Docker daemon
   for i in 1 2 3; do docker info >/dev/null 2>&1 && break; systemctl start docker 2>/dev/null; sleep 2; done
   if ! docker info >/dev/null 2>&1; then
     warn "docker daemon not responding — skipping"; FAILED+=("bloodhound (docker down)"); return 0
@@ -232,8 +228,7 @@ main() {
     esac
   done
 
-  # Serialize before touching anything (preflight truncates the log): refuse to
-  # run if another update already holds the lock.
+  # Serialize before preflight truncates the log — refuse if another run holds the lock.
   exec 9>"$LOCKFILE" || { echo "cannot open lock $LOCKFILE" >&2; exit 1; }
   if ! flock -n 9; then
     echo "Another update-tools run holds $LOCKFILE — exiting." >&2

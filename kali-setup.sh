@@ -1,29 +1,25 @@
 #!/usr/bin/env bash
 #
-# kali-setup.sh — fresh Kali pentest environment provisioning for root.
-# Run as root on a fresh host:  curl -s <raw_github_link> | bash
-# See --help for flags. Configures everything in root's own account (/root),
-# idempotent, non-interactive, logs to /root/kali-setup.log. A full run
-# configures autologin and reboots at the end; the summary then prints on the
-# first terminal opened after reboot.
+# kali-setup.sh — provision a fresh Kali pentest box in root's own account.
+# Run as root:  curl -s <raw_github_link> | sudo bash   (--help for flags)
+# Idempotent, non-interactive, logs to /root/kali-setup.log. A full run ends
+# with autologin + reboot; the summary then prints on the next terminal.
 #
 set -uo pipefail
 
-# Config (override via env or flags)
-HTB_TOKEN="${HTB_TOKEN:-}"            # HackTheBox token  -> written into ~/.zshrc
-BH_TOKEN_ID="${BH_TOKEN_ID:-}"        # BloodHound token id -> ~/.zshrc
-BH_TOKEN_KEY="${BH_TOKEN_KEY:-}"      # BloodHound token key -> ~/.zshrc
+# Config (override via env or flags). Tokens -> ~/.zshrc.
+HTB_TOKEN="${HTB_TOKEN:-}"
+BH_TOKEN_ID="${BH_TOKEN_ID:-}"
+BH_TOKEN_KEY="${BH_TOKEN_KEY:-}"
 
-# Config assets repo — the trees kali-setup deploys (zsh/, tmux/, ...). Cloned to
-# REPO_DIR; the config sections read from there. Point CONFIGS_REPO at a local
-# path to build from an unpushed checkout.
+# Config assets repo (zsh/, tmux/, ...), cloned to REPO_DIR; the config sections
+# read from there. CONFIGS_REPO may be a local path (unpushed checkout).
 CONFIGS_REPO="${CONFIGS_REPO:-https://github.com/Mojo8898/configs.git}"
 REPO_DIR=/opt/tools/configs
-DO_FORCE="${DO_FORCE:-0}"             # 1 = re-run stateful steps that otherwise skip (bloodhound, msfdb)
+DO_FORCE="${DO_FORCE:-0}"             # 1 = re-run stateful steps (bloodhound, msfdb)
 
-# mongosh resolves to the newest GitHub release (via the releases/latest tag),
-# falling back to this known-good pinned bundled .deb if the lookup fails.
-MONGOSH_DEB_URL="https://downloads.mongodb.com/compass/mongodb-mongosh_2.14.0_amd64.deb"  # fallback
+# mongosh: newest GitHub release, falling back to this pinned .deb on lookup failure.
+MONGOSH_DEB_URL="https://downloads.mongodb.com/compass/mongodb-mongosh_2.14.0_amd64.deb"
 MONGOSH_GH_REPO="mongodb-js/mongosh"
 
 export DEBIAN_FRONTEND=noninteractive
@@ -121,15 +117,15 @@ enable_service() {
 }
 
 # gh_latest_tag <owner/repo> — newest release tag via the releases/latest
-# redirect on github.com (not the rate-limited api.github.com). Empty on failure.
+# redirect (avoids rate-limited api.github.com). Empty on failure.
 gh_latest_tag() {
   curl -fsSLI -o /dev/null -w '%{url_effective}' \
     "https://github.com/$1/releases/latest" 2>/dev/null \
     | sed -n 's#.*/releases/tag/##p'
 }
 
-# set_qterminal_opaque <qterminal.ini-path> — TerminalTransparency=0 (opaque).
-# Kali's default terminal is qterminal (QSettings INI), not xfce4-terminal.
+# set_qterminal_opaque <ini> — TerminalTransparency=0. Kali's default terminal
+# is qterminal (QSettings INI), not xfce4-terminal.
 set_qterminal_opaque() {
   local ini="$1"
   mkdir -p "$(dirname "$ini")"
@@ -145,9 +141,8 @@ set_qterminal_opaque() {
   fi
 }
 
-# resolve_assets — clone/refresh the config assets repo into REPO_DIR. The config
-# sections read configs.zsh and the tmux tree from there, so this runs once up
-# front. CONFIGS_REPO may be a URL or a local path (unpushed checkout).
+# resolve_assets — clone/refresh the config assets repo into REPO_DIR, once up
+# front; the config sections read configs.zsh and the tmux tree from there.
 resolve_assets() {
   banner "Config assets ($CONFIGS_REPO)"
   if [[ -d "$REPO_DIR/.git" ]]; then
@@ -174,32 +169,27 @@ preflight() {
   : >"$LOGFILE" 2>/dev/null || LOGFILE="/tmp/kali-setup.log"
   log "kali-setup started $(date -Iseconds)"
 
-  # PATH for this non-interactive run — the default per-user dirs where uv/go/
-  # cargo install, plus the cloned-tools bin. Post-install hooks (bbot, nuclei
-  # -up, …) call those tools by name, so the dirs must be present here.
+  # PATH for this run: the default dirs uv/go/cargo install into, plus the
+  # cloned-tools bin. Post-install hooks (bbot, nuclei -up, …) call tools by name.
   export PATH="/opt/tools/bin:$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/go/bin:$PATH"
-  export GOPATH="${GOPATH:-$HOME/go}"      # go install -> $GOPATH/bin (~/go/bin)
+  export GOPATH="${GOPATH:-$HOME/go}"
 
-  # Core directories a lot of later steps assume.
   mkdir -p /opt/tools/bin /opt/lists /opt/scripts \
            "$HOME/.config/ffuf" "$HOME/.vscode" \
            /etc/apt/keyrings
 
-  # .hushlogin early (preflight always runs) so MOTD is suppressed before any
-  # later section spawns a shell and dumps the login banner into the log.
+  # .hushlogin early so later sections' shells don't dump the login banner to the log.
   touch "$HOME/.hushlogin"
 
   info "Refreshing apt and installing prerequisites (toolchains, etc.)..."
   run "apt update" apt-get update
-  # Toolchains/utilities that later sections depend on but the notes assume present.
+  # Toolchains/utilities later sections depend on.
   apt_install git curl wget gnupg ca-certificates apt-transport-https \
               zsh tmux build-essential pkg-config \
               golang-go rustc cargo ruby ruby-dev \
               python3 python3-venv python3-pip pipx \
               direnv entr fzf seclists wordlists
 
-  # Record the Go version for the log (Go builds redirect scratch to $GOTMPDIR
-  # in the go section to avoid filling a small /tmp tmpfs).
   log "go version: $(go version 2>/dev/null | awk '{print $3}')"
 }
 
@@ -209,9 +199,7 @@ setup_apt() {
   run "purge netexec/impacket-scripts (reinstalled via uv)" \
       apt-get purge -y netexec impacket-scripts
 
-  # docker.io = daemon only on current Kali/Debian; docker-cli provides the
-  # `docker` command (the piece that was missing). docker-compose provides
-  # Compose v2.
+  # docker.io is the daemon only; docker-cli provides the `docker` command.
   apt_install libreoffice gcc python3-dev libkrb5-dev krb5-pkinit krb5-user \
               rlwrap docker.io docker-cli docker-compose \
               putty jq build-essential gitleaks testssl.sh \
@@ -219,9 +207,7 @@ setup_apt() {
               libbz2-dev sshuttle faketime rdate sshpass evil-winrm-py
 
   run "apt autoremove" apt-get autoremove -y
-
-  # Docker needs to be up before bloodhound-cli install later.
-  enable_service docker
+  enable_service docker   # up before the bloodhound section
 }
 
 # base — filesystem scaffolding, wordlists
@@ -253,9 +239,7 @@ setup_tools() {
 
   if ! command -v mongosh >/dev/null 2>&1; then
     local mongo_url="$MONGOSH_DEB_URL"
-    # Resolve the latest tag via the releases/latest redirect, then build the
-    # bundled-deb URL (mongodb-mongosh_<ver>_amd64.deb — not the shared-openssl
-    # variants). Fall back to the pin if the tag lookup fails.
+    # Build the bundled-deb URL from the latest tag (not the shared-openssl variant).
     local tag; tag="$(gh_latest_tag "$MONGOSH_GH_REPO")"
     if [[ -n "$tag" ]]; then
       mongo_url="https://github.com/$MONGOSH_GH_REPO/releases/download/$tag/mongodb-mongosh_${tag#v}_amd64.deb"
@@ -299,8 +283,8 @@ setup_vscode() {
 setup_python() {
   banner "Python tooling (uv)"
 
-  # Install uv to its default ~/.local/bin (on PATH via ~/.zshrc). UV_NO_MODIFY_PATH
-  # stops the installer from editing rc files — ~/.zshrc already covers PATH.
+  # uv -> default ~/.local/bin (on PATH via ~/.zshrc). UV_NO_MODIFY_PATH stops
+  # the installer touching rc files — ~/.zshrc already handles PATH.
   if [[ ! -x "$HOME/.local/bin/uv" ]]; then
     run_sh "install uv" \
       "curl -LsSf https://astral.sh/uv/install.sh | env UV_NO_MODIFY_PATH=1 sh"
@@ -315,7 +299,7 @@ setup_python() {
     return 0
   fi
 
-  # Each entry is passed through word-splitting intentionally (some have flags).
+  # Entries are word-split intentionally (some carry flags).
   local t
   local uv_tools=(
     "--with pip bbot"
@@ -346,11 +330,10 @@ setup_python() {
   done
 
   run "bbot --install-all-deps" bbot --install-all-deps
-  # whatportis --update prompts [y/N]; feed 'y' so it doesn't abort headless.
+  # whatportis --update prompts [y/N] — feed 'y' for headless.
   run_sh "whatportis --update" "yes | whatportis --update"
 }
 
-# go
 setup_go() {
   banner "Go tooling"
   command -v go >/dev/null 2>&1 || { warn "go not found — skipping"; FAILED+=("go (not installed)"); return 0; }
@@ -380,16 +363,13 @@ setup_go() {
   run "katana -up"  katana -up
 }
 
-# rust
 setup_rust() {
   banner "Rust tooling"
   command -v cargo >/dev/null 2>&1 || { warn "cargo not found — skipping"; FAILED+=("cargo (not installed)"); return 0; }
-  # Default install -> ~/.cargo/bin (on PATH via ~/.zshrc).
   run "cargo install rusthound-ce" cargo install rusthound-ce
   run "cargo install skewrun"      cargo install skewrun
 }
 
-# ruby
 setup_ruby() {
   banner "Ruby tooling"
   command -v gem >/dev/null 2>&1 || { warn "gem not found — skipping"; FAILED+=("gem (not installed)"); return 0; }
@@ -400,8 +380,7 @@ setup_ruby() {
 setup_gittools() {
   banner "Git-built tools (fzf, john, kerbrute)"
 
-  # fzf — binary in /opt/tools/bin; the shell integration (Ctrl-R, Ctrl-T, Alt-C)
-  # is set up from ~/.zshrc via `fzf --zsh`, so build the binary only.
+  # fzf — binary only; shell integration comes from ~/.zshrc via `fzf --zsh`.
   gclone https://github.com/junegunn/fzf.git /opt/tools/fzf --depth 1
   if [[ -x /opt/tools/fzf/install ]]; then
     run "fzf install (bin only)" /opt/tools/fzf/install --bin
@@ -417,28 +396,23 @@ setup_gittools() {
   fi
   [[ -f /opt/tools/john/run/keepass2john ]] && \
     symlink /opt/tools/john/run/keepass2john /opt/tools/bin/keepass2john
-  # Default wordlist -> rockyou (idempotent). Edits a tracked file; update-tools
-  # stashes local changes around its git pull so this doesn't block updates.
+  # Default wordlist -> rockyou. Edits a tracked file; update-tools stashes
+  # around its pull so this doesn't block updates.
   local jconf=/opt/tools/john/run/john.conf
   [[ -f "$jconf" ]] && run "john.conf default wordlist -> rockyou" \
     sed -i 's#^Wordlist = \$JOHN/password\.lst#Wordlist = /usr/share/wordlists/rockyou.txt#' "$jconf"
 
-  # kerbrute — build from source (explicit dest fixes the clone-into-cwd bug).
+  # kerbrute — build from source.
   gclone https://github.com/0xZDH/kerbrute.git /opt/tools/kerbrute
   if [[ -d /opt/tools/kerbrute && ! -f /opt/tools/kerbrute/dist/kerbrute_linux_amd64 ]]; then
     run_sh "build kerbrute" "make -C /opt/tools/kerbrute linux"
   fi
   [[ -f /opt/tools/kerbrute/dist/kerbrute_linux_amd64 ]] && \
     symlink /opt/tools/kerbrute/dist/kerbrute_linux_amd64 /opt/tools/bin/kerbrute
-
-  # testssl.sh is installed from apt (see the apt section).
 }
 
-# bloodhound
 setup_bloodhound() {
   banner "BloodHound CLI"
-  # docker.io is installed and enabled by the apt section.
-  # Fetch the CLI binary if missing (idempotent).
   if [[ ! -x /opt/tools/bin/bloodhound-cli ]]; then
     run_sh "download bloodhound-cli" "
       cd /opt/tools/bin &&
@@ -448,8 +422,7 @@ setup_bloodhound() {
     ok "bloodhound-cli binary present"
   fi
 
-  # install/update both need a responding Docker daemon — wait briefly in case
-  # it's still coming up after the apt section installed/enabled it.
+  # install/update need a responding Docker daemon — wait briefly for it.
   enable_service docker
   local i
   for i in 1 2 3 4 5; do docker info >/dev/null 2>&1 && break; sleep 2; done
@@ -459,9 +432,8 @@ setup_bloodhound() {
     return 0
   fi
 
-  # 'install' pulls images and resets admin creds, so run it once only unless
-  # --force. A marker records a successful install. bloodhound-cli writes its
-  # deployment to the invoking user's ~/.config/bloodhound (here: root).
+  # 'install' pulls images and resets admin creds — run once (marker) unless
+  # --force. It deploys to root's ~/.config/bloodhound.
   if [[ -f /opt/tools/bin/.bloodhound-installed && "$DO_FORCE" != "1" ]]; then
     ok "bloodhound already installed (skip; --force to reinstall)"
   elif [[ -x /opt/tools/bin/bloodhound-cli ]]; then
@@ -469,14 +441,13 @@ setup_bloodhound() {
       "cd /opt/tools/bin && ./bloodhound-cli install && touch /opt/tools/bin/.bloodhound-installed"
   fi
 
-  # Web UI port 8080 -> 8081 (needs sed -i; a bare sed only prints, it doesn't
-  # edit), then pull the truly-latest images with `update`.
+  # Web UI port 8080 -> 8081, then pull the latest images.
   if [[ -d /root/.config/bloodhound ]]; then
     run_sh "bloodhound port 8080 -> 8081" "cd /root/.config/bloodhound && sed -i 's/8080/8081/g' *"
     run_sh "bloodhound-cli update (latest images)" "cd /opt/tools/bin && ./bloodhound-cli update"
   fi
 
-  # Print the default admin login from the deployed config.
+  # Print the default admin login.
   local bhconf=/root/.config/bloodhound/bloodhound.config.json
   if [[ -f "$bhconf" ]]; then
     local bhuser bhpass bhurl
@@ -488,7 +459,6 @@ setup_bloodhound() {
   fi
 }
 
-# sqlcmd (mssql-tools)
 setup_sqlcmd() {
   banner "mssql-tools (sqlcmd)"
   run_sh "add microsoft prod repo" "
@@ -537,7 +507,6 @@ EOF
     chmod +x kubectl"
 }
 
-# pcredz
 setup_pcredz() {
   banner "PCredz"
   gclone https://github.com/lgandx/PCredz.git /opt/tools/PCredz
@@ -572,7 +541,7 @@ setup_scripts() {
     symlink /opt/scripts/recon_setup/recon_setup.py /opt/tools/bin/recon_setup.py
   fi
 
-  # Host-specific (VMware shared folder). These will dangle without the mount.
+  # VMware shared folder — these dangle without the mount.
   symlink /mnt/hgfs/shared/staging "$HOME/staging"
   symlink "$HOME/staging/proxy"    /opt/tools/bin/proxy
   symlink "$HOME/staging/agent"    /opt/tools/bin/agent
@@ -581,8 +550,7 @@ setup_scripts() {
   fi
 }
 
-# tmux — root's config + plugins under ~/.config/tmux, entry at ~/.tmux.conf.
-# tmux.conf sets tmux_dir=~/.config/tmux, so its config/ and plugins/ resolve there.
+# tmux — entry at ~/.tmux.conf; its config/ and plugins/ live under ~/.config/tmux.
 setup_tmux() {
   banner "tmux config & plugins (~/.tmux.conf + ~/.config/tmux)"
   if [[ ! -f "$REPO_DIR/tmux/tmux.conf" ]]; then
@@ -595,8 +563,7 @@ setup_tmux() {
     cp '$REPO_DIR/tmux/config/options.conf'     '$HOME/.config/tmux/config/options.conf' &&
     cp '$REPO_DIR/tmux/config/keybindings.conf' '$HOME/.config/tmux/config/keybindings.conf' &&
     cp '$REPO_DIR/tmux/config/theme.conf'       '$HOME/.config/tmux/config/theme.conf'"
-  # Pre-install the plugins tmux.conf runs directly (tpm + mode-indicator);
-  # others declared via @plugin are fetched by tpm (prefix+I).
+  # Plugins tmux.conf runs directly; others (@plugin) are fetched by tpm (prefix+I).
   gclone https://github.com/tmux-plugins/tpm                "$HOME/.config/tmux/plugins/tpm"
   gclone https://github.com/MunifTanjim/tmux-mode-indicator "$HOME/.config/tmux/plugins/tmux-mode-indicator"
 }
@@ -605,20 +572,18 @@ setup_tmux() {
 setup_configs() {
   banner "Shell & tool configs"
 
-  # --- zsh: inline configs.zsh into /root/.zshrc, after Kali's stock config - #
-  # Appended (not sourced from /etc) so it's a normal part of root's own ~/.zshrc,
-  # and being last it wins over the stock prompt. Edit configs.zsh in the repo.
+  # --- zsh: inline configs.zsh at the end of /root/.zshrc, so it wins over
+  # Kali's stock config. Edit configs.zsh in the repo, not here.
   local zshrc="$HOME/.zshrc" czsh="$REPO_DIR/zsh/configs.zsh" kv val esc prev
   if [[ -f "$czsh" ]]; then
     touch "$zshrc"
-    # Carry over tokens from a prior inlined block when this run doesn't re-supply
-    # them, so re-running --only configs doesn't blank them.
+    # Keep tokens from a prior block when this run doesn't re-supply them.
     for kv in HTB_TOKEN BH_TOKEN_ID BH_TOKEN_KEY; do
       [[ -n "${!kv}" ]] && continue
       prev="$(sed -n "s|^export $kv=\"\(.*\)\"\$|\1|p" "$zshrc" | tail -n1)"
       [[ -n "$prev" ]] && printf -v "$kv" '%s' "$prev"
     done
-    # Replace any previously-inlined block, then append the current one.
+    # Replace any previous block, then append the current one.
     sed -i '/^### KALI-SETUP:CONFIGS-START/,/^### KALI-SETUP:CONFIGS-END/d' "$zshrc"
     {
       printf '\n### KALI-SETUP:CONFIGS-START  (managed by kali-setup.sh — edit the repo, not here)\n'
@@ -626,8 +591,8 @@ setup_configs() {
       printf '### KALI-SETUP:CONFIGS-END\n'
     } >> "$zshrc"
     ok "inlined configs.zsh into $zshrc"
-    # Fill tokens in the inlined block (dedicated box; not secret). Escape sed
-    # replacement metacharacters so a token with | & \ can't corrupt the line.
+    # Fill tokens (dedicated box; not secret). Escape sed metacharacters so a
+    # token with | & \ can't corrupt the line.
     for kv in HTB_TOKEN BH_TOKEN_ID BH_TOKEN_KEY; do
       val="${!kv}"; [[ -z "$val" ]] && continue
       esc="$(printf '%s' "$val" | sed -e 's/[\\&|]/\\&/g')"
@@ -680,7 +645,7 @@ EOF
   ok "qterminal transparency -> 0 (opaque)"
 
   # --- aliasr cheat ------------------------------------------------------- #
-  # <public_key> is a fixed placeholder — fill it in on the box when needed.
+  # <public_key> is a placeholder — fill it in on the box when needed.
   mkdir -p "$HOME/.cheats"
   cat > "$HOME/.cheats/custom.md" <<'CEOF'
 # custom
@@ -700,7 +665,7 @@ CEOF
 setup_services() {
   banner "Services (postgres / msfdb)"
   enable_service postgresql
-  # 'msfdb reinit' wipes an existing DB, so skip if already initialised unless --force.
+  # 'msfdb reinit' wipes the DB — skip if already initialised unless --force.
   if [[ -f "$HOME/.msf4/database.yml" && "$DO_FORCE" != "1" ]]; then
     ok "msfdb already initialised (skip; --force to reinit)"
   else
@@ -711,10 +676,8 @@ setup_services() {
 # xfce — tmux hotkey (needs a live X / D-Bus session)
 setup_xfce() {
   banner "XFCE tmux hotkey (ctrl+alt+t)"
-  # Editing the keyboard-shortcuts XML directly doesn't stick: xfsettingsd owns
-  # it at runtime and rewrites it from memory. Instead, apply the shortcut via
-  # xfconf-query (the live API) from an autostart entry that runs on each XFCE
-  # login (root's), surviving xfsettingsd rewrites.
+  # Editing the shortcuts XML doesn't stick (xfsettingsd rewrites it from memory).
+  # Apply via xfconf-query from an autostart entry that runs each XFCE login.
   local P='/commands/custom/<Primary><Alt>t'
   local V='env TMUX_HOTKEY=1 exo-open --launch TerminalEmulator'
 
@@ -738,7 +701,7 @@ X-XFCE-Autostart-Overridden=false
 EOF
   ok "xfce ctrl+alt+t keybind autostart installed (applies on root's next login)"
 
-  # If this run is inside a live XFCE session, apply it immediately too.
+  # Apply immediately if this run is inside a live XFCE session.
   if command -v xfconf-query >/dev/null 2>&1 && [[ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ]]; then
     run "apply xfce keybind now (live session)" /usr/local/bin/kali-xfce-keybind
   else
@@ -751,8 +714,7 @@ setup_upgrade() {
   banner "apt full-upgrade (this can take a while)"
   run "apt update" apt-get update
 
-  # Capture the upgrade output so we can decide whether a reboot is warranted
-  # (only if a reboot-relevant package was actually (re)configured).
+  # Capture output to decide whether a reboot is warranted.
   local out; out="$(mktemp)"
   printf '  → %s\n' "apt full-upgrade"
   if apt-get full-upgrade -y >"$out" 2>&1; then
@@ -762,8 +724,8 @@ setup_upgrade() {
   fi
   cat "$out" >>"$LOGFILE"
 
-  # "Setting up <pkg>" appears only for packages actually installed/upgraded in
-  # this run, so a no-op upgrade matches nothing and triggers no reboot.
+  # "Setting up <pkg>" appears only for packages (re)configured this run, so a
+  # no-op upgrade matches nothing and triggers no reboot.
   if grep -qE '^Setting up (linux-image|linux-headers|open-vm-tools|libc6|systemd)' "$out"; then
     local hit; hit="$(grep -oE '^Setting up (linux-image|linux-headers|open-vm-tools|libc6|systemd)[^ ]*' "$out" | awk '{print $3}' | sort -u | paste -sd', ')"
     need_reboot "full-upgrade reconfigured reboot-relevant package(s): $hit"
@@ -776,7 +738,7 @@ setup_upgrade() {
 # autologin — root GUI autologin (default on a full run)
 setup_autologin() {
   banner "Root autologin"
-  # Allow root to autologin under LightDM.
+  # Allow root to autologin under LightDM (its PAM blocks root by default).
   if [[ -f /etc/pam.d/lightdm-autologin ]]; then
     run "allow root in lightdm-autologin pam" \
       sed -i 's/^\(auth\s*required\s*pam_succeed_if.so user != root quiet_success\)/# \1/' \
@@ -795,9 +757,8 @@ EOF
   need_reboot "root autologin takes effect after reboot"
 }
 
-# render_summary <live|postreboot> — the colored summary, printed to stdout.
-# Wording differs: 'live' ends on a run that did not reboot; 'postreboot' is
-# what gets stored and shown on the first terminal after an automatic reboot.
+# render_summary <live|postreboot> — the colored summary. 'live' ends a no-reboot
+# run; 'postreboot' is stored and shown on the first terminal after the reboot.
 render_summary() {
   local mode="$1"
   printf '\n%s============================================================%s\n' "$c_cyn" "$c_rst"
@@ -817,8 +778,7 @@ render_summary() {
     printf '%sAll steps completed without recorded failures.%s\n\n' "$c_grn" "$c_rst"
   fi
 
-  # Only on a full install — a --only run isn't a complete setup, so the
-  # "manual steps" checklist would be misleading there.
+  # Full install only — the checklist would mislead on a targeted run.
   if [[ -z "$ONLY" ]]; then
     printf '%sManual steps still required:%s\n' "$c_yel" "$c_rst"
     printf '  - Install browser extensions: FoxyProxy, Wappalyzer, OneTab, Cookie Editor.\n'
@@ -833,9 +793,8 @@ render_summary() {
   fi
 }
 
-# install_firstrun_hook — add a line to root's interactive bash/zsh that prints
-# the stored summary on the first terminal after reboot, then drops a marker so
-# it never repeats.
+# install_firstrun_hook — make root's bash/zsh print the stored summary once,
+# on the first terminal after reboot (a marker stops it repeating).
 install_firstrun_hook() {
   local marker='# kali-setup: post-setup summary (shown once)'
   local line='if [[ $- == *i* && -r '"$FIRSTRUN_FILE"' && ! -e "$HOME/.kali-setup-summary-shown" ]]; then command cat '"$FIRSTRUN_FILE"'; : > "$HOME/.kali-setup-summary-shown" 2>/dev/null; fi'
@@ -848,7 +807,7 @@ install_firstrun_hook() {
 
 # Summary — printed live, or stored for the first post-reboot terminal.
 summary() {
-  # Honour a system-flagged reboot in addition to our explicit triggers.
+  # Honour a system-flagged reboot too.
   [[ -f /run/reboot-required || -f /var/run/reboot-required ]] && \
     need_reboot "system flagged /run/reboot-required"
 
@@ -891,7 +850,6 @@ EOF
 }
 
 main() {
-  # Parse args.
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --only)      ONLY="$2"; shift 2 ;;
@@ -918,8 +876,7 @@ main() {
     "setup_$s"
   done
 
-  # Complete run only (no --only/--skip): configure root autologin, which also
-  # flags the reboot. Targeted runs don't surprise you with either.
+  # Full run only: autologin (which also flags the reboot). Targeted runs skip both.
   [[ -z "$ONLY" && -z "$SKIP" ]] && setup_autologin
 
   summary

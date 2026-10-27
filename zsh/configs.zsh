@@ -1,46 +1,38 @@
-# configs.zsh — root's managed zsh config, inlined into /root/.zshrc by
-# kali-setup.sh (appended after Kali's stock config). Edit here in the repo;
-# re-run --only configs to reapply.
+# configs.zsh
 
-# ── Shell options ────────────────────────────────────────────────
+# Shell options
 setopt SHARE_HISTORY
 [[ $- == *i* ]] && stty -ixon
 
-# ── Environment ──────────────────────────────────────────────────
-# Tool bins on PATH: cloned/built tools in /opt/tools/bin, plus the default
-# per-user dirs for uv (~/.local/bin), go (~/go/bin) and cargo (~/.cargo/bin).
-# Guarded so repeated `exec zsh` (the a/exh helpers) doesn't stack duplicates.
+# Environment
 case ":$PATH:" in
   *:/opt/tools/bin:*) ;;
   *) export PATH="/opt/tools/bin:$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:$PATH" ;;
 esac
 
-# API tokens — kali-setup.sh fills these in the deployed copy when provided.
+# API tokens
 export HTB_TOKEN=""
 export BH_TOKEN_ID=""
 export BH_TOKEN_KEY=""
 
-# ── Exegol-history + Aliasr ──────────────────────────────────────
-# Run the tool, then re-exec zsh so freshly written aliases/env take effect.
+# Exegol-history + Aliasr
 function exh { exegol-history "$@" && exec zsh }
 function a { aliasr "$@" && exec zsh }
 [ -f "$HOME/.exegol_history/profile.sh" ] && source "$HOME/.exegol_history/profile.sh"
-
-# Short handles for the current engagement context (set by profile.sh above).
 export U="$USER" P="$PASSWORD" N="$NT_HASH" D="$DOMAIN" I="$IP"
 
-# ── Start in tmux (hotkey launch only) ───────────────────────────
+# Start in tmux (hotkey launch only)
 if [[ -o interactive ]] && [[ -n "$TMUX_HOTKEY" ]] && [[ -z "$TMUX" ]] && command -v tmux >/dev/null 2>&1; then
     if ! tmux ls >/dev/null 2>&1; then
         tmux new -s initial
     fi
 fi
 
-# ── Completion ───────────────────────────────────────────────────
+# Completion
 fpath=($HOME/.zsh/completions $fpath)
 autoload -Uz compinit && compinit
 
-# ── fzf (Ctrl-R history / Ctrl-T files / Alt-C cd) + completion ───
+# fzf (Ctrl-R history / Ctrl-T files / Alt-C cd) + completion
 if command -v fzf >/dev/null 2>&1; then
   if fzf --zsh >/dev/null 2>&1; then
     source <(fzf --zsh)
@@ -50,10 +42,10 @@ if command -v fzf >/dev/null 2>&1; then
   fi
 fi
 
-# ── direnv ───────────────────────────────────────────────────────
+# direnv
 command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 
-# ── Aliases ──────────────────────────────────────────────────────
+# Aliases
 alias ipa='ip --brief --color a;echo;ip r'
 alias proxychains='proxychains4 -q'
 alias pc='proxychains'
@@ -93,7 +85,7 @@ alias ireloc='i686-w64-mingw32-objdump -r'
 alias ihex='i686-w64-mingw32-objdump -s'
 alias idump='i686-w64-mingw32-objcopy --dump-section .text='
 
-# ── Functions ────────────────────────────────────────────────────
+# Functions
 mkcd () { mkdir -p $@ && cd ${@:$#} }
 psencode(){ printf '%s' "$*" | iconv -t UTF-16LE | base64 -w0; echo; }
 nthash(){ printf '%s' "$1" | iconv -f UTF-8 -t UTF-16LE | openssl dgst -md4 | awk '{print $2}'; }
@@ -117,17 +109,6 @@ how() {
     echo "which: $p"
     file "$p"
     [ -e "$p" ] && ls -al "$p"
-}
-
-crystal-demo () {
-    rm ./out.bin 2>/dev/null
-    crystal-link "$1" /mnt/c/Users/Tester/Desktop/CS/Crystal-Palace/dist/demo/test.x64.dll out.bin
-    if [ $? -eq 0 ] && [ -s out.bin ]; then
-        /mnt/c/Users/Tester/Desktop/CS/Crystal-Palace/dist/demo/run.x64.exe out.bin
-    else
-        echo "Build failed or output file is empty"
-        return 1
-    fi
 }
 
 # exports: list a PE's export table, symbol names highlighted
@@ -185,11 +166,10 @@ imports() {
     '
 }
 
-# ── Prompt ───────────────────────────────────────────────────────
-# Named uniquely so it doesn't collide with Kali's own configure_prompt.
+# Prompt
 __ks_configure_prompt() {
     local db_prompt=""
-    if [[ -n "$USER" ]]; then
+    if [[ -n "$USER" ]] && grep -q '^export USER=' ~/.exegol_history/profile.sh 2>/dev/null; then
         if [[ -n "$DOMAIN" ]]; then
             db_prompt="%F{white}[%F{yellow}${USER}@${DOMAIN}%F{white}]%F{%(#.blue.green)}─"
         else
@@ -212,14 +192,8 @@ __ks_configure_prompt() {
     esac
 }
 
-# Newline before the prompt on new terminals/panes too. Kali's precmd skips the
-# blank line on the first prompt (via an empty _NEW_LINE_BEFORE_PROMPT); seed it
-# so that precmd prints on the first prompt as well — no competing precmd needed.
 _NEW_LINE_BEFORE_PROMPT=1
 
-# This block is appended to the end of /root/.zshrc, after Kali's stock prompt.
-# Apply ours on the first prompt via a one-shot precmd hook so it wins, then
-# unregister.
 autoload -Uz add-zsh-hook
 __ks_apply_prompt() { __ks_configure_prompt; add-zsh-hook -d precmd __ks_apply_prompt; }
 add-zsh-hook precmd __ks_apply_prompt
