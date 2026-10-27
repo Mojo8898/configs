@@ -200,10 +200,9 @@ setup_apt() {
   run "purge netexec/impacket-scripts (reinstalled via uv)" \
       apt-get purge -y netexec impacket-scripts
 
-  # docker.io is the daemon only; docker-cli provides the `docker` command.
   apt_install libreoffice gcc python3-dev libkrb5-dev krb5-pkinit krb5-user \
               rlwrap docker.io docker-cli docker-compose \
-              putty jq build-essential gitleaks testssl.sh \
+              putty jq build-essential gitleaks testssl.sh lftp \
               pkg-config libssl-dev zlib1g-dev libgmp-dev libpcap-dev \
               libbz2-dev sshuttle faketime rdate sshpass evil-winrm-py
 
