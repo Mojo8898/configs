@@ -36,6 +36,7 @@ LOGFILE="/root/kali-setup.log"
 FIRSTRUN_FILE="/root/.kali-setup-firstrun"     # summary shown on first terminal after reboot
 FAILED=()
 NOTES=()
+BH_LOGIN=""            # BloodHound admin login, surfaced in the post-reboot summary
 REBOOT_NEEDED=0
 REBOOT_REASONS=()
 
@@ -454,8 +455,10 @@ setup_bloodhound() {
     bhuser="$(jq -r '.default_admin.principal_name // "admin"' "$bhconf" 2>/dev/null)"
     bhpass="$(jq -r '.default_password // .default_admin.password // empty' "$bhconf" 2>/dev/null)"
     bhurl="$(jq -r '.root_url // empty' "$bhconf" 2>/dev/null)"
-    [[ -n "$bhpass" ]] && \
-      say "${c_grn}BloodHound login:${c_rst} ${bhuser} / ${bhpass}${bhurl:+  ($bhurl)}"
+    if [[ -n "$bhpass" ]]; then
+      BH_LOGIN="${bhuser} / ${bhpass}${bhurl:+  ($bhurl)}"
+      say "${c_grn}BloodHound login:${c_rst} ${BH_LOGIN}"
+    fi
   fi
 }
 
@@ -777,6 +780,10 @@ render_summary() {
   else
     printf '%sAll steps completed without recorded failures.%s\n\n' "$c_grn" "$c_rst"
   fi
+
+  # BloodHound login — the live `say` scrolled away before the reboot.
+  [[ "$mode" == postreboot && -n "$BH_LOGIN" ]] && \
+    printf '%sBloodHound login:%s %s\n\n' "$c_grn" "$c_rst" "$BH_LOGIN"
 
   # Full install only — the checklist would mislead on a targeted run.
   if [[ -z "$ONLY" ]]; then
