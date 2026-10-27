@@ -1,15 +1,19 @@
-# configs.zsh — managed global zsh config, deployed by kali-setup.sh.
-# Sourced from /etc/zsh/zshrc, so every user (root, kali, future) inherits it.
-# Edit here in the configs repo; re-pull on the box (or --only configs) to apply.
-# $HOME-relative paths resolve per user at runtime.
+# configs.zsh — root's managed zsh config, inlined into /root/.zshrc by
+# kali-setup.sh (appended after Kali's stock config). Edit here in the repo;
+# re-run --only configs to reapply.
 
 # ── Shell options ────────────────────────────────────────────────
 setopt SHARE_HISTORY
 [[ $- == *i* ]] && stty -ixon
 
 # ── Environment ──────────────────────────────────────────────────
-# /opt/tools/bin is already prepended by /etc/zsh/zshenv; this adds ~/.local/bin.
-[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
+# Tool bins on PATH: cloned/built tools in /opt/tools/bin, plus the default
+# per-user dirs for uv (~/.local/bin), go (~/go/bin) and cargo (~/.cargo/bin).
+# Guarded so repeated `exec zsh` (the a/exh helpers) doesn't stack duplicates.
+case ":$PATH:" in
+  *:/opt/tools/bin:*) ;;
+  *) export PATH="/opt/tools/bin:$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:$PATH" ;;
+esac
 
 # API tokens — kali-setup.sh fills these in the deployed copy when provided.
 export HTB_TOKEN=""
@@ -182,8 +186,7 @@ imports() {
 }
 
 # ── Prompt ───────────────────────────────────────────────────────
-# Named uniquely so Kali's per-user ~/.zshrc (which defines its own
-# configure_prompt and is sourced after this file) can't shadow ours.
+# Named uniquely so it doesn't collide with Kali's own configure_prompt.
 __ks_configure_prompt() {
     local db_prompt=""
     if [[ -n "$USER" ]]; then
@@ -214,9 +217,9 @@ __ks_configure_prompt() {
 # so that precmd prints on the first prompt as well — no competing precmd needed.
 _NEW_LINE_BEFORE_PROMPT=1
 
-# /etc/zsh/zshrc is sourced before the per-user ~/.zshrc, which on Kali redefines
-# the prompt. Apply ours on the first prompt via a one-shot precmd hook so it
-# wins, then unregister.
+# This block is appended to the end of /root/.zshrc, after Kali's stock prompt.
+# Apply ours on the first prompt via a one-shot precmd hook so it wins, then
+# unregister.
 autoload -Uz add-zsh-hook
 __ks_apply_prompt() { __ks_configure_prompt; add-zsh-hook -d precmd __ks_apply_prompt; }
 add-zsh-hook precmd __ks_apply_prompt

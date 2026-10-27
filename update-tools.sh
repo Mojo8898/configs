@@ -69,15 +69,11 @@ preflight() {
   : >"$LOGFILE" 2>/dev/null || LOGFILE="/tmp/update-tools.log"
   log "update-tools started $(date -Iseconds)"
 
-  # Same shared locations kali-setup.sh installs into, so updates land there.
-  # /usr/local/bin explicit: managed tools live there and sudo's secure_path may
-  # omit it, so tools called by name (nuclei -up, bbot, …) would 127 otherwise.
-  export PATH="/opt/tools/bin:/usr/local/bin:/usr/local/sbin:$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/go/bin:$PATH"
+  # Same default locations kali-setup.sh installs into (uv -> ~/.local/bin,
+  # go -> ~/go/bin, cargo -> ~/.cargo/bin), plus the cloned-tools bin.
+  export PATH="/opt/tools/bin:$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/go/bin:$PATH"
   export GOPATH="${GOPATH:-$HOME/go}"
-  export GOBIN=/usr/local/bin
   export GOTMPDIR="$HOME/.cache/go-tmp"; mkdir -p "$GOTMPDIR"
-  export UV_TOOL_DIR=/opt/uv
-  export UV_TOOL_BIN_DIR=/usr/local/bin
   export DEBIAN_FRONTEND=noninteractive NEEDRESTART_MODE=a
 }
 
@@ -138,8 +134,8 @@ setup_rust() {
   banner "Rust tools"
   have cargo || { warn "cargo not found — skipping"; FAILED+=("cargo (missing)"); return 0; }
   # Re-install pulls the newest crates.io version if one exists (no-op if current).
-  if have rusthound-ce; then run "cargo install rusthound-ce" cargo install --root /usr/local rusthound-ce; else ok "not installed, skipped: rusthound-ce"; fi
-  if have skewrun; then run "cargo install skewrun" cargo install --root /usr/local skewrun; else ok "not installed, skipped: skewrun"; fi
+  if have rusthound-ce; then run "cargo install rusthound-ce" cargo install rusthound-ce; else ok "not installed, skipped: rusthound-ce"; fi
+  if have skewrun; then run "cargo install skewrun" cargo install skewrun; else ok "not installed, skipped: skewrun"; fi
 }
 
 setup_ruby() {

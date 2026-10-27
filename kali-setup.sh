@@ -1,26 +1,25 @@
 #!/usr/bin/env bash
 #
-# kali-setup.sh — fresh Kali pentest environment provisioning.
+# kali-setup.sh — fresh Kali pentest environment provisioning for root.
 # Run as root on a fresh host:  curl -s <raw_github_link> | bash
-# See --help for flags. Idempotent, non-interactive, logs to /root/kali-setup.log.
-# With --reboot, reboots at the end if a step requires it; the summary then
-# prints on the first terminal opened after reboot.
+# See --help for flags. Configures everything in root's own account (/root),
+# idempotent, non-interactive, logs to /root/kali-setup.log. A full run
+# configures autologin and reboots at the end; the summary then prints on the
+# first terminal opened after reboot.
 #
 set -uo pipefail
 
 # Config (override via env or flags)
-HTB_TOKEN="${HTB_TOKEN:-}"            # HackTheBox token  -> written into configs.zsh
-BH_TOKEN_ID="${BH_TOKEN_ID:-}"        # BloodHound token id -> configs.zsh
-BH_TOKEN_KEY="${BH_TOKEN_KEY:-}"      # BloodHound token key -> configs.zsh
+HTB_TOKEN="${HTB_TOKEN:-}"            # HackTheBox token  -> written into ~/.zshrc
+BH_TOKEN_ID="${BH_TOKEN_ID:-}"        # BloodHound token id -> ~/.zshrc
+BH_TOKEN_KEY="${BH_TOKEN_KEY:-}"      # BloodHound token key -> ~/.zshrc
 
 # Config assets repo — the trees kali-setup deploys (zsh/, tmux/, ...). Cloned to
-# REPO_DIR; every config section installs from there. Point CONFIGS_REPO at a
-# local path to build from an unpushed checkout.
+# REPO_DIR; the config sections read from there. Point CONFIGS_REPO at a local
+# path to build from an unpushed checkout.
 CONFIGS_REPO="${CONFIGS_REPO:-https://github.com/Mojo8898/configs.git}"
 REPO_DIR=/opt/tools/configs
-DO_AUTOLOGIN="${DO_AUTOLOGIN:-0}"     # 1 = configure root autologin (off by default)
 DO_FORCE="${DO_FORCE:-0}"             # 1 = re-run stateful steps that otherwise skip (bloodhound, msfdb)
-DO_REBOOT="${DO_REBOOT:-0}"           # 1 = reboot at the end if a step requires one
 
 # mongosh resolves to the newest GitHub release (via the releases/latest tag),
 # falling back to this known-good pinned bundled .deb if the lookup fails.
@@ -38,7 +37,7 @@ SKIP=""
 
 # Logging / helpers
 LOGFILE="/root/kali-setup.log"
-FIRSTRUN_FILE="/var/lib/kali-setup/firstrun"   # world-readable; shown once per user
+FIRSTRUN_FILE="/root/.kali-setup-firstrun"     # summary shown on first terminal after reboot
 FAILED=()
 NOTES=()
 REBOOT_NEEDED=0
@@ -117,19 +116,6 @@ symlink() {
   ln -sfn "$1" "$2" && ok "link $2 -> $1" || warn "link failed: $2 -> $1"
 }
 
-# append_block <file> <marker>  (content on stdin) — append once only.
-append_block() {
-  local file="$1" marker="$2" content
-  content="$(cat)"
-  touch "$file"
-  if grep -qF "$marker" "$file" 2>/dev/null; then
-    ok "block already in $(basename "$file")"
-    return 0
-  fi
-  printf '\n%s\n' "$content" >>"$file"
-  ok "appended block to $(basename "$file")"
-}
-
 enable_service() {
   run "enable service: $1" systemctl enable --now "$1"
 }
@@ -159,35 +145,13 @@ set_qterminal_opaque() {
   fi
 }
 
-# seed_homes <relpath> — copy /etc/skel/<relpath> into every EXISTING home too,
-# owned by that home's user. Only for configs with no system-wide location
-# (ffuf, aliasr, .hushlogin): /etc/skel handles future users, this handles
-# current ones. Everything with an /etc location uses that instead.
-seed_homes() {
-  local rel="$1" h owner
-  [[ -e "/etc/skel/$rel" ]] || return 0
-  for h in /root /home/*; do
-    [[ -d "$h" ]] || continue
-    mkdir -p "$(dirname "$h/$rel")"
-    cp -f "/etc/skel/$rel" "$h/$rel"
-    owner="$(stat -c %U "$h" 2>/dev/null)"
-    [[ -n "$owner" ]] && chown "$owner:$(id -gn "$owner" 2>/dev/null || echo "$owner")" "$h/$rel" 2>/dev/null
-  done
-  ok "seeded $rel into existing homes"
-}
-
-# resolve_assets — clone/refresh the config assets repo into REPO_DIR. Every
-# config section (configs, tmux, ...) installs from there, so this runs once up
+# resolve_assets — clone/refresh the config assets repo into REPO_DIR. The config
+# sections read configs.zsh and the tmux tree from there, so this runs once up
 # front. CONFIGS_REPO may be a URL or a local path (unpushed checkout).
 resolve_assets() {
   banner "Config assets ($CONFIGS_REPO)"
   if [[ -d "$REPO_DIR/.git" ]]; then
-    # Stash local edits (the token values written into configs.zsh) so a ff-only
-    # pull isn't blocked by a dirty worktree; restore them after.
-    local stashed=0
-    git -C "$REPO_DIR" diff --quiet 2>/dev/null || { git -C "$REPO_DIR" stash push -q && stashed=1; }
     run "refresh configs repo" git -C "$REPO_DIR" pull --ff-only
-    [[ "$stashed" == 1 ]] && { git -C "$REPO_DIR" stash pop -q 2>/dev/null || warn "configs stash pop failed — token values may need re-applying (--only configs)"; }
   else
     gclone "$CONFIGS_REPO" "$REPO_DIR"
   fi
@@ -210,30 +174,20 @@ preflight() {
   : >"$LOGFILE" 2>/dev/null || LOGFILE="/tmp/kali-setup.log"
   log "kali-setup started $(date -Iseconds)"
 
-  # PATH that covers everything we install, for this non-interactive run.
-  # /usr/local/bin is explicit: managed tools (uv/go/cargo) land there, and
-  # sudo's secure_path may omit it, so post-install hooks (bbot, nuclei -up, …)
-  # that call those tools by name would 127 if we relied on inheritance.
-  export PATH="/opt/tools/bin:/usr/local/bin:/usr/local/sbin:$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/go/bin:$PATH"
-  export GOPATH="${GOPATH:-$HOME/go}"
-
-  # Install tool binaries into a shared /opt/tools/bin (on every user's PATH via
-  # the configs section) so root, kali, and any other user can run them.
-  export UV_TOOL_DIR=/opt/uv               # uv tool venvs (shared, world-readable)
-  export UV_TOOL_BIN_DIR=/usr/local/bin   # uv tool executables (managed -> /usr/local/bin)
-  export GOBIN=/usr/local/bin             # go install drops binaries here (managed)
+  # PATH for this non-interactive run — the default per-user dirs where uv/go/
+  # cargo install, plus the cloned-tools bin. Post-install hooks (bbot, nuclei
+  # -up, …) call those tools by name, so the dirs must be present here.
+  export PATH="/opt/tools/bin:$HOME/.local/bin:$HOME/go/bin:$HOME/.cargo/bin:/usr/local/go/bin:$PATH"
+  export GOPATH="${GOPATH:-$HOME/go}"      # go install -> $GOPATH/bin (~/go/bin)
 
   # Core directories a lot of later steps assume.
-  mkdir -p /opt/tools/bin /opt/lists /opt/scripts /opt/uv \
+  mkdir -p /opt/tools/bin /opt/lists /opt/scripts \
            "$HOME/.config/ffuf" "$HOME/.vscode" \
            /etc/apt/keyrings
 
-  # .hushlogin early: preflight always runs (even under --only/--skip), so MOTD
-  # is suppressed before any later section spawns a shell and dumps the login
-  # banner into the log. /etc/skel (future users) + every existing home.
-  mkdir -p /etc/skel
-  touch /etc/skel/.hushlogin
-  seed_homes .hushlogin
+  # .hushlogin early (preflight always runs) so MOTD is suppressed before any
+  # later section spawns a shell and dumps the login banner into the log.
+  touch "$HOME/.hushlogin"
 
   info "Refreshing apt and installing prerequisites (toolchains, etc.)..."
   run "apt update" apt-get update
@@ -345,11 +299,11 @@ setup_vscode() {
 setup_python() {
   banner "Python tooling (uv)"
 
-  # Install uv itself into /usr/local/bin (on PATH + secure_path, all users) so
-  # it's always resolvable — not a per-user ~/.local/bin that isn't on PATH.
-  if [[ ! -x /usr/local/bin/uv ]]; then
+  # Install uv to its default ~/.local/bin (on PATH via ~/.zshrc). UV_NO_MODIFY_PATH
+  # stops the installer from editing rc files — ~/.zshrc already covers PATH.
+  if [[ ! -x "$HOME/.local/bin/uv" ]]; then
     run_sh "install uv" \
-      "curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR=/usr/local/bin UV_NO_MODIFY_PATH=1 sh"
+      "curl -LsSf https://astral.sh/uv/install.sh | env UV_NO_MODIFY_PATH=1 sh"
     hash -r
   else
     ok "uv already installed"
@@ -430,9 +384,9 @@ setup_go() {
 setup_rust() {
   banner "Rust tooling"
   command -v cargo >/dev/null 2>&1 || { warn "cargo not found — skipping"; FAILED+=("cargo (not installed)"); return 0; }
-  # --root /usr/local puts binaries in /usr/local/bin (managed; on PATH by default).
-  run "cargo install rusthound-ce" cargo install --root /usr/local rusthound-ce
-  run "cargo install skewrun"      cargo install --root /usr/local skewrun
+  # Default install -> ~/.cargo/bin (on PATH via ~/.zshrc).
+  run "cargo install rusthound-ce" cargo install rusthound-ce
+  run "cargo install skewrun"      cargo install skewrun
 }
 
 # ruby
@@ -446,9 +400,8 @@ setup_ruby() {
 setup_gittools() {
   banner "Git-built tools (fzf, john, kerbrute)"
 
-  # fzf — shared binary in /opt (on the global PATH); the shell integration
-  # (Ctrl-R, Ctrl-T, Alt-C) is sourced globally from /etc/zsh/zshrc via
-  # `fzf --zsh`, so build the binary only — no per-home ~/.fzf.zsh.
+  # fzf — binary in /opt/tools/bin; the shell integration (Ctrl-R, Ctrl-T, Alt-C)
+  # is set up from ~/.zshrc via `fzf --zsh`, so build the binary only.
   gclone https://github.com/junegunn/fzf.git /opt/tools/fzf --depth 1
   if [[ -x /opt/tools/fzf/install ]]; then
     run "fzf install (bin only)" /opt/tools/fzf/install --bin
@@ -628,59 +581,66 @@ setup_scripts() {
   fi
 }
 
-# tmux — global config + plugins, sourced live from the configs repo.
-# tmux reads /etc/tmux.conf for every user; we make that a one-line source of
-# the repo's tmux.conf (REPO_DIR/tmux/tmux.conf), which sets its own base dir.
-# Edits to the repo apply on the next tmux server start — no copy/rewrite.
-# tpm plugins install under REPO_DIR/tmux/plugins (gitignored in the repo).
+# tmux — root's config + plugins under ~/.config/tmux, entry at ~/.tmux.conf.
+# tmux.conf sets tmux_dir=~/.config/tmux, so its config/ and plugins/ resolve there.
 setup_tmux() {
-  banner "tmux config & plugins (global /etc/tmux.conf -> configs repo)"
+  banner "tmux config & plugins (~/.tmux.conf + ~/.config/tmux)"
   if [[ ! -f "$REPO_DIR/tmux/tmux.conf" ]]; then
     warn "tmux tree not found in configs repo ($REPO_DIR/tmux) — skipping"
     return 0
   fi
-  printf 'source "%s/tmux/tmux.conf"\n' "$REPO_DIR" > /etc/tmux.conf
-  ok "wrote /etc/tmux.conf -> source $REPO_DIR/tmux/tmux.conf"
+  mkdir -p "$HOME/.config/tmux/config"
+  run_sh "install tmux config" "
+    cp '$REPO_DIR/tmux/tmux.conf'               '$HOME/.tmux.conf' &&
+    cp '$REPO_DIR/tmux/config/options.conf'     '$HOME/.config/tmux/config/options.conf' &&
+    cp '$REPO_DIR/tmux/config/keybindings.conf' '$HOME/.config/tmux/config/keybindings.conf' &&
+    cp '$REPO_DIR/tmux/config/theme.conf'       '$HOME/.config/tmux/config/theme.conf'"
   # Pre-install the plugins tmux.conf runs directly (tpm + mode-indicator);
   # others declared via @plugin are fetched by tpm (prefix+I).
-  gclone https://github.com/tmux-plugins/tpm                "$REPO_DIR/tmux/plugins/tpm"
-  gclone https://github.com/MunifTanjim/tmux-mode-indicator "$REPO_DIR/tmux/plugins/tmux-mode-indicator"
-  chmod -R a+rX "$REPO_DIR/tmux/plugins" /etc/tmux.conf 2>/dev/null || true
+  gclone https://github.com/tmux-plugins/tpm                "$HOME/.config/tmux/plugins/tpm"
+  gclone https://github.com/MunifTanjim/tmux-mode-indicator "$HOME/.config/tmux/plugins/tmux-mode-indicator"
 }
 
-# configs — zshrc, ffufrc, snmp.conf, chromium policy, aliasr cheats
+# configs — ~/.zshrc block, ffufrc, snmp.conf, chromium policy, aliasr cheat
 setup_configs() {
   banner "Shell & tool configs"
 
-  # --- global zsh config (all users) -------------------------------------- #
-  # Managed config lives in the configs repo ($REPO_DIR/zsh/configs.zsh) and is
-  # sourced from /etc/zsh/zshrc, inherited by every user. Edit it in the repo,
-  # not here.
-  if [[ -f "$REPO_DIR/zsh/configs.zsh" ]]; then
-    append_block /etc/zsh/zshrc "### KALI-SETUP:ZSHRC-SOURCE" <<EOF
-### KALI-SETUP:ZSHRC-SOURCE  (managed by kali-setup.sh)
-[ -r "$REPO_DIR/zsh/configs.zsh" ] && source "$REPO_DIR/zsh/configs.zsh"
-EOF
-    ok "global zsh config sourced from $REPO_DIR/zsh/configs.zsh"
-  else
-    warn "zsh/configs.zsh not in configs repo — skipping global zsh config"
-  fi
-
-  # Tokens -> written straight into the deployed configs.zsh (dedicated box;
-  # not secret here). resolve_assets stashes this local edit around its pull.
-  local czsh="$REPO_DIR/zsh/configs.zsh" kv var val
+  # --- zsh: inline configs.zsh into /root/.zshrc, after Kali's stock config - #
+  # Appended (not sourced from /etc) so it's a normal part of root's own ~/.zshrc,
+  # and being last it wins over the stock prompt. Edit configs.zsh in the repo.
+  local zshrc="$HOME/.zshrc" czsh="$REPO_DIR/zsh/configs.zsh" kv val esc prev
   if [[ -f "$czsh" ]]; then
-    for kv in "HTB_TOKEN=$HTB_TOKEN" "BH_TOKEN_ID=$BH_TOKEN_ID" "BH_TOKEN_KEY=$BH_TOKEN_KEY"; do
-      var="${kv%%=*}"; val="${kv#*=}"
-      [[ -z "$val" ]] && continue
-      sed -i "s|^export $var=.*|export $var=\"$val\"|" "$czsh"
-      ok "set $var in configs.zsh"
+    touch "$zshrc"
+    # Carry over tokens from a prior inlined block when this run doesn't re-supply
+    # them, so re-running --only configs doesn't blank them.
+    for kv in HTB_TOKEN BH_TOKEN_ID BH_TOKEN_KEY; do
+      [[ -n "${!kv}" ]] && continue
+      prev="$(sed -n "s|^export $kv=\"\(.*\)\"\$|\1|p" "$zshrc" | tail -n1)"
+      [[ -n "$prev" ]] && printf -v "$kv" '%s' "$prev"
     done
+    # Replace any previously-inlined block, then append the current one.
+    sed -i '/^### KALI-SETUP:CONFIGS-START/,/^### KALI-SETUP:CONFIGS-END/d' "$zshrc"
+    {
+      printf '\n### KALI-SETUP:CONFIGS-START  (managed by kali-setup.sh — edit the repo, not here)\n'
+      cat "$czsh"
+      printf '### KALI-SETUP:CONFIGS-END\n'
+    } >> "$zshrc"
+    ok "inlined configs.zsh into $zshrc"
+    # Fill tokens in the inlined block (dedicated box; not secret). Escape sed
+    # replacement metacharacters so a token with | & \ can't corrupt the line.
+    for kv in HTB_TOKEN BH_TOKEN_ID BH_TOKEN_KEY; do
+      val="${!kv}"; [[ -z "$val" ]] && continue
+      esc="$(printf '%s' "$val" | sed -e 's/[\\&|]/\\&/g')"
+      sed -i "s|^export $kv=.*|export $kv=\"$esc\"|" "$zshrc"
+      ok "set $kv in ~/.zshrc"
+    done
+  else
+    warn "zsh/configs.zsh not in configs repo — skipping ~/.zshrc block"
   fi
 
-  # --- ffufrc (no system-wide location; seed /etc/skel for all users) ---- #
-  mkdir -p /etc/skel/.config/ffuf
-  cat > /etc/skel/.config/ffuf/ffufrc <<'EOF'
+  # --- ffufrc ------------------------------------------------------------- #
+  mkdir -p "$HOME/.config/ffuf"
+  cat > "$HOME/.config/ffuf/ffufrc" <<'EOF'
 [http]
     headers = [
         "User-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
@@ -700,14 +660,13 @@ EOF
 [matcher]
     status = "all"
 EOF
-  ok "wrote ffufrc to /etc/skel"
-  seed_homes .config/ffuf/ffufrc   # ffuf has no /etc config path — reach current users too
+  ok "wrote ~/.config/ffuf/ffufrc"
 
   # --- snmp.conf: enable MIB loading -------------------------------------- #
   [[ -f /etc/snmp/snmp.conf ]] && run "comment 'mibs :' in snmp.conf" \
     sed -i 's/^\(mibs[[:space:]]*:.*\)$/# \1/' /etc/snmp/snmp.conf
 
-  # --- chromium root support ---------------------------------------------- #
+  # --- chromium: silence --no-sandbox command-line warning ---------------- #
   mkdir -p /etc/chromium/policies/managed
   cat > /etc/chromium/policies/managed/command_line_warnings.json <<'EOF'
 {
@@ -716,44 +675,14 @@ EOF
 EOF
   ok "wrote chromium managed policy"
 
-  # --- qterminal: 0% transparency (opaque), system-wide default ---------- #
-  # Kali's default terminal is qterminal; TerminalTransparency=0 = opaque.
-  set_qterminal_opaque /etc/xdg/qterminal.org/qterminal.ini
-  ok "qterminal transparency -> 0 (opaque; system default /etc/xdg)"
+  # --- qterminal: 0% transparency (opaque) for root ----------------------- #
+  set_qterminal_opaque "$HOME/.config/qterminal.org/qterminal.ini"
+  ok "qterminal transparency -> 0 (opaque)"
 
-  # --- system-wide PATH so every user gets the shared /opt tools --------- #
-  cat > /etc/profile.d/zz-pentest-tools.sh <<'EOF'
-# kali-setup.sh — shared pentest tools on PATH for all users
-export PATH="/opt/tools/bin:$PATH"
-EOF
-  # zsh reads zshenv on every invocation (login or not); add it there too.
-  if [[ -d /etc/zsh ]]; then
-    grep -q '/opt/tools/bin' /etc/zsh/zshenv 2>/dev/null || \
-      printf '\nexport PATH="/opt/tools/bin:$PATH"\n' >> /etc/zsh/zshenv
-  fi
-  # Make the shared tool trees readable/executable by every user.
-  chmod -R a+rX /opt/tools /opt/uv 2>/dev/null || true
-  ok "shared tools on PATH for all users (/opt/tools/bin)"
-
-  # Put /opt/tools/bin on sudo's secure_path so `sudo <tool>` resolves. Written
-  # as a validated drop-in; a bad sudoers file breaks sudo, so install only if
-  # visudo accepts it.
-  local sd=/etc/sudoers.d/kali-setup-path tmp
-  tmp="$(mktemp)"
-  printf 'Defaults secure_path="/opt/tools/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"\n' > "$tmp"
-  if visudo -cf "$tmp" >/dev/null 2>&1; then
-    install -m 0440 "$tmp" "$sd"
-    ok "added /opt/tools/bin to sudo secure_path"
-  else
-    warn "sudoers drop-in failed validation — not installed"
-    FAILED+=("sudo secure_path")
-  fi
-  rm -f "$tmp"
-
-  # --- aliasr cheat (no system-wide location; seed /etc/skel) ------------ #
+  # --- aliasr cheat ------------------------------------------------------- #
   # <public_key> is a fixed placeholder — fill it in on the box when needed.
-  mkdir -p /etc/skel/.cheats
-  cat > /etc/skel/.cheats/custom.md <<'CEOF'
+  mkdir -p "$HOME/.cheats"
+  cat > "$HOME/.cheats/custom.md" <<'CEOF'
 # custom
 
 ## Copy private key
@@ -761,10 +690,9 @@ EOF
 mkdir ~/.ssh 2>/dev/null; echo '<public_key>' >> ~/.ssh/authorized_keys
 ```
 CEOF
-  ok "wrote aliasr cheat to /etc/skel"
-  seed_homes .cheats/custom.md     # aliasr has no /etc config path — reach current users too
+  ok "wrote aliasr cheat to ~/.cheats"
 
-  # Make zsh the default shell for root.
+  # Make zsh root's default shell.
   command -v zsh >/dev/null 2>&1 && run "chsh root -> zsh" chsh -s "$(command -v zsh)" root
 }
 
@@ -785,8 +713,8 @@ setup_xfce() {
   banner "XFCE tmux hotkey (ctrl+alt+t)"
   # Editing the keyboard-shortcuts XML directly doesn't stick: xfsettingsd owns
   # it at runtime and rewrites it from memory. Instead, apply the shortcut via
-  # xfconf-query (the live API) from an autostart entry that runs on every XFCE
-  # login — for every user, and surviving xfsettingsd rewrites.
+  # xfconf-query (the live API) from an autostart entry that runs on each XFCE
+  # login (root's), surviving xfsettingsd rewrites.
   local P='/commands/custom/<Primary><Alt>t'
   local V='env TMUX_HOTKEY=1 exo-open --launch TerminalEmulator'
 
@@ -798,8 +726,8 @@ xfconf-query -c xfce4-keyboard-shortcuts -p '$P' -s '$V' 2>/dev/null \\
 EOF
   chmod +x /usr/local/bin/kali-xfce-keybind
 
-  mkdir -p /etc/xdg/autostart
-  cat > /etc/xdg/autostart/kali-xfce-keybind.desktop <<'EOF'
+  mkdir -p "$HOME/.config/autostart"
+  cat > "$HOME/.config/autostart/kali-xfce-keybind.desktop" <<'EOF'
 [Desktop Entry]
 Type=Application
 Name=Kali tmux hotkey
@@ -808,7 +736,7 @@ OnlyShowIn=XFCE;
 NoDisplay=true
 X-XFCE-Autostart-Overridden=false
 EOF
-  ok "xfce ctrl+alt+t keybind autostart installed (applies on next login, all users)"
+  ok "xfce ctrl+alt+t keybind autostart installed (applies on root's next login)"
 
   # If this run is inside a live XFCE session, apply it immediately too.
   if command -v xfconf-query >/dev/null 2>&1 && [[ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ]]; then
@@ -845,9 +773,9 @@ setup_upgrade() {
   rm -f "$out"
 }
 
-# autologin — root GUI autologin (opt-in via --autologin)
+# autologin — root GUI autologin (default on a full run)
 setup_autologin() {
-  banner "Root autologin (opt-in)"
+  banner "Root autologin"
   # Allow root to autologin under LightDM.
   if [[ -f /etc/pam.d/lightdm-autologin ]]; then
     run "allow root in lightdm-autologin pam" \
@@ -894,29 +822,25 @@ render_summary() {
   if [[ -z "$ONLY" ]]; then
     printf '%sManual steps still required:%s\n' "$c_yel" "$c_rst"
     printf '  - Install browser extensions: FoxyProxy, Wappalyzer, OneTab, Cookie Editor.\n'
-    [[ "$DO_AUTOLOGIN" != "1" ]] && \
-      printf '  - Root autologin NOT configured (re-run with --autologin to enable).\n'
     local n; for n in "${NOTES[@]}"; do printf '  - %s\n' "$n"; done
     printf '\n'
   fi
 
   if [[ "$mode" == postreboot ]]; then
-    printf '%sShown once per user, on the first terminal after the setup reboot.%s\n' "$c_cyn" "$c_rst"
+    printf '%sShown on the first terminal opened after the setup reboot.%s\n' "$c_cyn" "$c_rst"
   else
     printf 'Start a fresh zsh shell to pick up the new config:  exec zsh\n'
   fi
 }
 
-# install_firstrun_hook — add a system-wide line (sourced by every user's
-# interactive bash/zsh) that prints the stored summary on that user's first
-# terminal, then drops a per-user marker so it never repeats. Whichever user
-# opens a terminal first after the reboot sees it; the shared file is
-# world-readable so it works for root, kali, or any other user.
+# install_firstrun_hook — add a line to root's interactive bash/zsh that prints
+# the stored summary on the first terminal after reboot, then drops a marker so
+# it never repeats.
 install_firstrun_hook() {
-  local marker='# kali-setup: post-setup summary (shown once per user)'
+  local marker='# kali-setup: post-setup summary (shown once)'
   local line='if [[ $- == *i* && -r '"$FIRSTRUN_FILE"' && ! -e "$HOME/.kali-setup-summary-shown" ]]; then command cat '"$FIRSTRUN_FILE"'; : > "$HOME/.kali-setup-summary-shown" 2>/dev/null; fi'
   local rc
-  for rc in /etc/zsh/zshrc /etc/bash.bashrc; do
+  for rc in "$HOME/.zshrc" "$HOME/.bashrc"; do
     [[ -e "$rc" ]] || touch "$rc"
     grep -qF "$marker" "$rc" 2>/dev/null || printf '\n%s\n%s\n' "$marker" "$line" >> "$rc"
   done
@@ -928,14 +852,11 @@ summary() {
   [[ -f /run/reboot-required || -f /var/run/reboot-required ]] && \
     need_reboot "system flagged /run/reboot-required"
 
-  if [[ "$REBOOT_NEEDED" == "1" && "$DO_REBOOT" == "1" ]]; then
+  if [[ "$REBOOT_NEEDED" == "1" ]]; then
     install_firstrun_hook
-    mkdir -p "$(dirname "$FIRSTRUN_FILE")"
     render_summary postreboot > "$FIRSTRUN_FILE" 2>/dev/null
-    chmod 0755 "$(dirname "$FIRSTRUN_FILE")" 2>/dev/null
-    chmod 0644 "$FIRSTRUN_FILE" 2>/dev/null
 
-    banner "Setup complete — rebooting (--reboot)"
+    banner "Setup complete — rebooting"
     say "A step that requires a reboot ran:"
     local r; for r in "${REBOOT_REASONS[@]}"; do say "  - $r"; done
     say ""
@@ -943,8 +864,6 @@ summary() {
     systemctl reboot 2>/dev/null || reboot
   else
     render_summary live
-    [[ "$REBOOT_NEEDED" == "1" ]] && \
-      say "${c_yel}A reboot is recommended. Re-run with --reboot, or reboot manually.${c_rst}"
   fi
   return 0
 }
@@ -959,12 +878,12 @@ kali-setup.sh — provision a fresh Kali pentest box
 Options:
   --only  a,b,c     Run only these sections
   --skip  a,b,c     Run everything except these sections
-  --autologin       Also configure root GUI autologin (off by default)
   --force           Re-run stateful steps that otherwise skip when already
                     set up (bloodhound-cli install, msfdb reinit)
-  --reboot          Reboot at the end if a step requires one
   --list            List sections and exit
   -h, --help        Show this help
+
+A full run (no --only) also configures root autologin and reboots at the end.
 
 Sections (in order):
   ${ALL_SECTIONS[*]}
@@ -977,9 +896,7 @@ main() {
     case "$1" in
       --only)      ONLY="$2"; shift 2 ;;
       --skip)      SKIP="$2"; shift 2 ;;
-      --autologin) DO_AUTOLOGIN=1; shift ;;
       --force)     DO_FORCE=1; shift ;;
-      --reboot)    DO_REBOOT=1; shift ;;
       --list)      printf '%s\n' "${ALL_SECTIONS[@]}"; exit 0 ;;
       -h|--help)   usage; exit 0 ;;
       *) echo "Unknown option: $1" >&2; usage; exit 1 ;;
@@ -1001,7 +918,9 @@ main() {
     "setup_$s"
   done
 
-  [[ "$DO_AUTOLOGIN" == "1" ]] && setup_autologin
+  # Complete run only (no --only/--skip): configure root autologin, which also
+  # flags the reboot. Targeted runs don't surprise you with either.
+  [[ -z "$ONLY" && -z "$SKIP" ]] && setup_autologin
 
   summary
 }
