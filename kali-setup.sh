@@ -201,7 +201,7 @@ setup_apt() {
       apt-get purge -y netexec impacket-scripts
 
   apt_install libreoffice gcc python3-dev libkrb5-dev krb5-pkinit krb5-user \
-              rlwrap docker.io docker-cli docker-compose \
+              rlwrap docker.io docker-cli docker-compose rustscan \
               putty jq build-essential gitleaks testssl.sh lftp \
               pkg-config libssl-dev zlib1g-dev libgmp-dev libpcap-dev \
               libbz2-dev sshuttle faketime rdate sshpass evil-winrm-py
@@ -325,6 +325,7 @@ setup_python() {
     "git+https://github.com/EnableSecurity/sipvicious.git"
     "git+https://github.com/ThePorgs/Exegol-history"
     "git+https://github.com/epinna/weevely3.git"
+    "git+https://github.com/c0inslot/CorpCrack.git"
   )
   for t in "${uv_tools[@]}"; do
     run "uv tool install $t" uv tool install $t
