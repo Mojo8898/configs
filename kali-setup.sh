@@ -676,39 +676,49 @@ setup_services() {
   fi
 }
 
-# xfce — tmux hotkey (needs a live X / D-Bus session)
+# xfce — per-login tweaks: ctrl+alt+t hotkey + no screen blanking (needs X/D-Bus)
 setup_xfce() {
-  banner "XFCE tmux hotkey (ctrl+alt+t)"
-  # Editing the shortcuts XML doesn't stick (xfsettingsd rewrites it from memory).
-  # Apply via xfconf-query from an autostart entry that runs each XFCE login.
+  banner "XFCE settings (ctrl+alt+t hotkey, no screen blanking)"
+  # xfsettingsd/the power manager own these at runtime, so apply them via
+  # xfconf-query from an autostart entry that runs on each XFCE login.
   local P='/commands/custom/<Primary><Alt>t'
   local V='env TMUX_HOTKEY=1 exo-open --launch TerminalEmulator'
+  local helper=/usr/local/bin/kali-xfce-settings
 
-  cat > /usr/local/bin/kali-xfce-keybind <<EOF
+  cat > "$helper" <<EOF
 #!/bin/sh
-# Set ctrl+alt+t to open a tmux terminal (idempotent). Runs per XFCE login.
+# Applied on each XFCE login (idempotent): set the value, else create it.
+
+# ctrl+alt+t -> tmux terminal
 xfconf-query -c xfce4-keyboard-shortcuts -p '$P' -s '$V' 2>/dev/null \\
   || xfconf-query -c xfce4-keyboard-shortcuts -p '$P' -n -t string -s '$V'
+
+# Never blank / power off the screen (match daily driver).
+for kv in "dpms-enabled bool false" "dpms-on-ac-off uint 0" "dpms-on-ac-sleep uint 0"; do
+  set -- \$kv
+  xfconf-query -c xfce4-power-manager -p "/xfce4-power-manager/\$1" -s "\$3" 2>/dev/null \\
+    || xfconf-query -c xfce4-power-manager -p "/xfce4-power-manager/\$1" -n -t "\$2" -s "\$3"
+done
 EOF
-  chmod +x /usr/local/bin/kali-xfce-keybind
+  chmod +x "$helper"
 
   mkdir -p "$HOME/.config/autostart"
-  cat > "$HOME/.config/autostart/kali-xfce-keybind.desktop" <<'EOF'
+  cat > "$HOME/.config/autostart/kali-xfce-settings.desktop" <<EOF
 [Desktop Entry]
 Type=Application
-Name=Kali tmux hotkey
-Exec=/usr/local/bin/kali-xfce-keybind
+Name=Kali XFCE settings
+Exec=$helper
 OnlyShowIn=XFCE;
 NoDisplay=true
 X-XFCE-Autostart-Overridden=false
 EOF
-  ok "xfce ctrl+alt+t keybind autostart installed (applies on root's next login)"
+  ok "xfce settings autostart installed (applies on root's next login)"
 
   # Apply immediately if this run is inside a live XFCE session.
   if command -v xfconf-query >/dev/null 2>&1 && [[ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ]]; then
-    run "apply xfce keybind now (live session)" /usr/local/bin/kali-xfce-keybind
+    run "apply xfce settings now (live session)" "$helper"
   else
-    note "ctrl+alt+t keybind takes effect on next XFCE login. To apply in the current session: /usr/local/bin/kali-xfce-keybind"
+    note "XFCE settings (ctrl+alt+t, no screen blanking) take effect on next XFCE login. To apply now: $helper"
   fi
 }
 
