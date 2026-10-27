@@ -325,6 +325,7 @@ setup_python() {
     "wafw00f"
     "git+https://github.com/EnableSecurity/sipvicious.git"
     "git+https://github.com/ThePorgs/Exegol-history"
+    "git+https://github.com/epinna/weevely3.git"
   )
   for t in "${uv_tools[@]}"; do
     run "uv tool install $t" uv tool install $t
