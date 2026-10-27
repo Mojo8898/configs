@@ -205,10 +205,10 @@ usage() {
 update-tools.sh — update the kali-setup.sh toolchain (run manually, as root)
 
 Options:
-  --only  a,b,c   Update only these sections
-  --skip  a,b,c   Update everything except these sections
-  --list          List sections and exit
-  -h, --help      Show this help
+  -o, --only  a,b,c   Update only these sections
+  -s, --skip  a,b,c   Update everything except these sections
+  -l, --list          List sections and exit
+  -h, --help          Show this help
 
 Sections (in order):
   ${ALL_SECTIONS[*]}
@@ -220,9 +220,9 @@ EOF
 main() {
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      --only) ONLY="$2"; shift 2 ;;
-      --skip) SKIP="$2"; shift 2 ;;
-      --list) printf '%s\n' "${ALL_SECTIONS[@]}"; exit 0 ;;
+      -o|--only) ONLY="$2"; shift 2 ;;
+      -s|--skip) SKIP="$2"; shift 2 ;;
+      -l|--list) printf '%s\n' "${ALL_SECTIONS[@]}"; exit 0 ;;
       -h|--help) usage; exit 0 ;;
       *) echo "Unknown option: $1" >&2; usage; exit 1 ;;
     esac

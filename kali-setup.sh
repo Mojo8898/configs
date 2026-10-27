@@ -852,12 +852,12 @@ usage() {
 kali-setup.sh — provision a fresh Kali pentest box
 
 Options:
-  --only  a,b,c     Run only these sections
-  --skip  a,b,c     Run everything except these sections
-  --force           Re-run stateful steps that otherwise skip when already
-                    set up (bloodhound-cli install, msfdb reinit)
-  --list            List sections and exit
-  -h, --help        Show this help
+  -o, --only  a,b,c   Run only these sections
+  -s, --skip  a,b,c   Run everything except these sections
+  -f, --force         Re-run stateful steps that otherwise skip when already
+                      set up (bloodhound-cli install, msfdb reinit)
+  -l, --list          List sections and exit
+  -h, --help          Show this help
 
 A full run (no --only) also configures root autologin and reboots at the end.
 
@@ -869,10 +869,10 @@ EOF
 main() {
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      --only)      ONLY="$2"; shift 2 ;;
-      --skip)      SKIP="$2"; shift 2 ;;
-      --force)     DO_FORCE=1; shift ;;
-      --list)      printf '%s\n' "${ALL_SECTIONS[@]}"; exit 0 ;;
+      -o|--only)   ONLY="$2"; shift 2 ;;
+      -s|--skip)   SKIP="$2"; shift 2 ;;
+      -f|--force)  DO_FORCE=1; shift ;;
+      -l|--list)   printf '%s\n' "${ALL_SECTIONS[@]}"; exit 0 ;;
       -h|--help)   usage; exit 0 ;;
       *) echo "Unknown option: $1" >&2; usage; exit 1 ;;
     esac
