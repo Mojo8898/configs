@@ -5,7 +5,7 @@ description: Check, commit and push the current work to the dev branch. Use when
 
 # Ship
 
-1. Branch. Repos without a `pyproject.toml` stay on `main`; skip to step 2. Otherwise, if on `main`, switch to `dev` (`git switch -c dev` if it doesn't exist); uncommitted changes come along. If `origin/main` has commits `dev` lacks (a merged PR, say), `git merge origin/main` first.
+1. Branch. If on `main`, switch to `dev` (`git switch -c dev` if it doesn't exist); uncommitted changes come along. If `origin/main` has commits `dev` lacks (a merged PR, say), `git merge origin/main` first.
 
 2. Checks, when `pyproject.toml` exists:
 

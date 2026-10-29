@@ -4,7 +4,7 @@ Code: the smallest change that does the job. No speculative abstractions, no com
 
 Writing anywhere in a project (commits, README, PR text, comments, docs): short plain sentences, as a person would type them. No em dashes, no emoji, no filler words like "robust" or "seamless", no bullet list where a sentence will do.
 
-Git: packages work on `dev` and `main` moves only at release; repos you don't publish move `main` with the `promote` skill; repos with no `dev` at all work on `main`. Commit and push only when asked, together, with the `ship` skill. Commit only project files: source, tests, pyproject or equivalent, README, LICENSE, CI. Never caches, venvs, lockfiles, build output, editor or agent config.
+Git: all work goes on `dev`, pushed with the `ship` skill. `main` moves up to `dev` only to publish: `release` for PyPI packages, `promote` for everything else. Commit and push only when asked. Commit only project files: source, tests, pyproject or equivalent, README, LICENSE, CI. Never caches, venvs, lockfiles, build output, editor or agent config.
 
 Commit subject: imperative, under 50 characters, no type prefix, no period. Add a body only when the diff doesn't explain why.
 
