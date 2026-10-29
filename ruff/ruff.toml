@@ -1,0 +1,10 @@
+# User-level config. Applies to any project without its own ruff section.
+fix = true
+output-format = "concise"
+
+[lint]
+select = ["F", "E", "W", "I", "UP", "B", "SIM"]
+ignore = ["E501"]  # the formatter wraps what it can
+
+[lint.per-file-ignores]
+"__init__.py" = ["F401"]

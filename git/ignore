@@ -1,0 +1,19 @@
+# Agent and editor files
+/.claude/
+/CLAUDE.md
+/AGENTS.md
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+.env

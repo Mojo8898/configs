@@ -1,0 +1,36 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "defaultMode": "auto"
+  },
+  "model": "fable",
+  "skillOverrides": {
+    "anthropic-skills:docx": "off",
+    "anthropic-skills:pptx": "off",
+    "anthropic-skills:xlsx": "off",
+    "anthropic-skills:pdf": "off",
+    "anthropic-skills:docs": "off",
+    "anthropic-skills:google-workspace": "off",
+    "anthropic-skills:computer-use": "off",
+    "anthropic-skills:chrome-browser": "off",
+    "anthropic-skills:built-in-browser": "off",
+    "anthropic-skills:deep-research": "off",
+    "anthropic-skills:morning": "off",
+    "anthropic-skills:skill-creator": "off",
+    "anthropic-skills:import-memory": "off"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh",
+    "padding": 0
+  },
+  "effortLevel": "high",
+  "theme": "dark",
+  "switchModelsOnFlag": true,
+  "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true
+  }
+}

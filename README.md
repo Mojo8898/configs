@@ -50,7 +50,8 @@ sqlcmd cloud pcredz scripts tmux configs services xfce upgrade
 - Config lives in this repo. kali-setup clones it to `/opt/tools/configs` and
   deploys from there: `zsh/configs.zsh` is inlined into `/root/.zshrc` (appended
   after Kali's stock config so it takes precedence), and the `tmux/` tree is
-  copied into place. Edit the repo and re-run `--only configs,tmux` to reapply.
+  copied into place. `claude/`, `ruff/` and `git/` are symlinked into `~/.claude`
+  and `~/.config`. Edit the repo and re-run `--only configs,tmux` to reapply.
   Build from a local checkout with `CONFIGS_REPO=/path/to/clone`.
 
 ## Updating

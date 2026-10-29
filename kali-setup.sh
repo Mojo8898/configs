@@ -611,6 +611,18 @@ setup_configs() {
     warn "zsh/configs.zsh not in configs repo — skipping ~/.zshrc block"
   fi
 
+  # --- dev tooling: claude code, ruff, git. Linked, so repo edits apply live.
+  mkdir -p "$HOME/.claude/skills" "$HOME/.config/ruff" "$HOME/.config/git"
+  symlink "$REPO_DIR/claude/CLAUDE.md"     "$HOME/.claude/CLAUDE.md"
+  symlink "$REPO_DIR/claude/settings.json" "$HOME/.claude/settings.json"
+  symlink "$REPO_DIR/claude/statusline.sh" "$HOME/.claude/statusline.sh"
+  local s
+  for s in "$REPO_DIR"/claude/skills/*/; do
+    symlink "${s%/}" "$HOME/.claude/skills/$(basename "$s")"
+  done
+  symlink "$REPO_DIR/ruff/ruff.toml" "$HOME/.config/ruff/ruff.toml"
+  symlink "$REPO_DIR/git/ignore"     "$HOME/.config/git/ignore"
+
   # --- ffufrc ------------------------------------------------------------- #
   mkdir -p "$HOME/.config/ffuf"
   cat > "$HOME/.config/ffuf/ffufrc" <<'EOF'
